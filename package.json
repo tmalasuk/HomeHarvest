@@ -1,0 +1,17 @@
+{
+  "name": "hhwebsite",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "watch": "npx sass scss/app.scss css/app.css --style=compressed --watch"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
+    "sass": "^1.97.3"
+  }
+}
