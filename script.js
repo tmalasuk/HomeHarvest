@@ -365,7 +365,7 @@ $(document).ready(function () {
 
     $(".ac-button").on("click", function () {
 
-        if (window.innerWidth <= 576) {
+        if (window.innerWidth <= 1400) {
             let currentCategory = $(this).next(".category-items-mobile");
 
             // Close all other open categories

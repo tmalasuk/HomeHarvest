@@ -13120,9 +13120,9 @@ main > :first-child h1, main > :first-child .h1 {
   padding-bottom: 20px;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   main {
-    max-width: 576px;
+    max-width: 100%;
     margin: 0;
     background-color: #2E2E2E;
   }
@@ -13162,7 +13162,7 @@ main > :first-child h1, main > :first-child .h1 {
   background-color: #839485;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   .nav-tabs {
     position: fixed;
     bottom: 0;
@@ -13202,7 +13202,7 @@ main > :first-child h1, main > :first-child .h1 {
   width: 100%;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   .tab-content {
     background-color: #2E2E2E;
   }
@@ -13221,10 +13221,10 @@ section {
   padding: 45px 55px;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   section {
     padding: 0;
-    max-width: 576px;
+    max-width: 100%;
   }
 }
 #pantry .mobile-search {
@@ -13241,7 +13241,7 @@ section {
   top: 5px;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   #pantry .mobile-search {
     display: flex;
     max-height: 30px;
@@ -13307,7 +13307,7 @@ section {
   color: #7d8fb3;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   .category-menu-container h2, .category-menu-container .h2 {
     color: #FFFFFF;
   }
@@ -13342,7 +13342,7 @@ section {
   animation: spin-burst 0.6s forwards cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   #pantry header {
     padding-bottom: 10px;
     display: block;
@@ -13466,14 +13466,17 @@ section {
   max-width: 100%;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   .inventory {
+    min-width: 100%;
     padding-bottom: 70px;
     margin-top: 0;
     scrollbar-width: none;
     font-size: xx-small;
     background-color: #2E2E2E;
     color: white;
+    margin-left: 0;
+    margin-right: 0;
     /* IE and Edge */
     -ms-overflow-style: none;
   }
@@ -13482,9 +13485,6 @@ section {
   }
   .inventory .td:not(.batch-header-open):hover {
     background-color: #222222;
-  }
-  .inventory .col-0 {
-    display: none;
   }
   .inventory .table-header {
     font-size: xx-small;
@@ -13546,6 +13546,11 @@ section {
     /* Chrome, Safari */
   }
 }
+@media (max-width: 770px) {
+  .col-0 {
+    display: none;
+  }
+}
 .add-item-container {
   position: fixed;
   bottom: 20px;
@@ -13605,7 +13610,7 @@ section {
   font-size: small;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   .add-item-container {
     bottom: 120px;
     background-color: #C4663A;
@@ -13741,7 +13746,7 @@ section {
   padding-bottom: 30px;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   #editItemModal .modal-content {
     background-color: #363636;
     color: white;
@@ -14121,9 +14126,9 @@ input[type=range]::-ms-thumb:active {
   display: none;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   #grocery {
-    max-width: 576px;
+    max-width: 100%;
     background: #141414;
     background: linear-gradient(179deg, rgb(20, 20, 20) 20%, rgb(46, 46, 46) 50%);
     padding-bottom: 70px;
@@ -14131,7 +14136,7 @@ input[type=range]::-ms-thumb:active {
   #grocery .section-buttons {
     justify-content: center;
     min-height: 80px;
-    max-width: 576px;
+    max-width: 100%;
     background-color: #141414;
     padding-top: 20px;
     padding-left: none;
@@ -14245,7 +14250,8 @@ input[type=range]::-ms-thumb:active {
     border: none;
     color: #FFFFFF;
     border-radius: 0px 0px 10px 10px;
-    margin: 0 auto;
+    margin-right: auto;
+    margin-left: 10%;
   }
   #grocery .section-content .category-items-mobile .addItemtoGroceryListBtn h5, #grocery .section-content .category-items-mobile .addItemtoGroceryListBtn .h5 {
     margin-bottom: 10px;
@@ -14387,7 +14393,7 @@ input[type=range]::-ms-thumb:active {
   width: 400px;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   #editCatModal .modal-content {
     background-color: #363636;
     color: white;
@@ -14506,7 +14512,7 @@ input[type=range]::-ms-thumb:active {
     visibility: hidden;
   }
 }
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   .shopping-list {
     background-color: #2E2E2E;
     border: none;
@@ -14592,7 +14598,7 @@ input[type=range]::-ms-thumb:active {
   cursor: pointer;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   .action-container {
     display: flex;
     margin-top: 70px;
@@ -14696,7 +14702,7 @@ input[type=range]::-ms-thumb:active {
   background-color: #2E2E2E;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   #stockSection header {
     border-bottom: none;
     flex-wrap: wrap;
@@ -14830,15 +14836,17 @@ input[type=range]::-ms-thumb:active {
   pointer-events: none;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   .cart-item-container {
-    column-count: 1;
+    column-count: 2;
     max-width: 100%;
     padding: 0px;
     background-color: #2E2E2E;
     padding-left: 0px;
+    margin: 0 auto;
   }
   .cart-item-container .cart-card {
+    min-width: 80%;
     max-width: 100%;
     border-radius: 0;
     background-color: #2E2E2E;
@@ -14850,6 +14858,11 @@ input[type=range]::-ms-thumb:active {
   }
   .cart-item-container .cart-card .unit-switcher .unit-arrow {
     color: white;
+  }
+}
+@media (max-width: 920px) {
+  .cart-item-container {
+    column-count: 1;
   }
 }
 #recipes header {
@@ -14907,7 +14920,7 @@ input[type=range]::-ms-thumb:active {
   border-bottom: white 1px solid;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
   #recipes {
     padding-bottom: 120px;
   }

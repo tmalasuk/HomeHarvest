@@ -77,9 +77,9 @@ main {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     main {
-        max-width: 576px;
+        max-width: 100%;
         margin: 0;
         background-color: $dark-background;
 
@@ -135,7 +135,7 @@ main {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     .nav-tabs {
         position: fixed;
         bottom: 0;
@@ -184,7 +184,7 @@ main {
     width: 100%;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     .tab-content {
         background-color: $dark-background;
     }
@@ -205,10 +205,10 @@ section {
     padding: 45px 55px;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     section {
         padding: 0;
-        max-width: 576px;
+        max-width: 100%;
     }
 }
 
@@ -230,7 +230,7 @@ section {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     #pantry {
         .mobile-search {
             display: flex;
@@ -239,7 +239,6 @@ section {
             margin: 0px auto;
             padding-top: 20px;
             padding-bottom: 40px;
-
 
             input {
                 background-color: #1c1c1c;
@@ -311,7 +310,7 @@ section {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     .category-menu-container {
 
         h2 {
@@ -365,7 +364,7 @@ section {
 
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     #pantry {
         header {
             padding-bottom: 10px;
@@ -524,14 +523,17 @@ section {
     max-width: 100%;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     .inventory {
+        min-width: 100%;
         padding-bottom: 70px;
         margin-top: 0;
         scrollbar-width: none;
         font-size: xx-small;
         background-color: #2E2E2E;
         color: white;
+        margin-left: 0;
+        margin-right: 0;
 
         /* IE and Edge */
         -ms-overflow-style: none;
@@ -542,10 +544,6 @@ section {
             &:hover {
                 background-color: #222222;
             }
-        }
-
-        .col-0 {
-            display: none;
         }
 
         .table-header {
@@ -630,6 +628,12 @@ section {
 
 }
 
+@media (max-width: 770px) {
+    .col-0 {
+            display: none;
+        }
+}
+
 
 .add-item-container {
     position: fixed;
@@ -700,7 +704,7 @@ section {
 
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     .add-item-container {
         bottom: 120px;
         background-color: $add-button-bg-dark;
@@ -875,7 +879,7 @@ section {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
 
     #editItemModal {
 
@@ -1384,9 +1388,9 @@ input[type="range"]::-ms-thumb {
     display: none;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     #grocery {
-        max-width: 576px;
+        max-width: 100%;
         background: #141414;
         background: linear-gradient(179deg, rgba(20, 20, 20, 1) 20%, rgba(46, 46, 46, 1) 50%);
         padding-bottom: 70px;
@@ -1395,7 +1399,7 @@ input[type="range"]::-ms-thumb {
         .section-buttons {
             justify-content: center;
             min-height: 80px;
-            max-width: 576px;
+            max-width: 100%;
             background-color: #141414;
             padding-top: 20px;
             padding-left: none;
@@ -1534,7 +1538,8 @@ input[type="range"]::-ms-thumb {
                     border: none;
                     color: $white;
                     border-radius: 0px 0px 10px 10px;
-                    margin: 0 auto;
+                    margin-right: auto;
+                    margin-left: 10%;
 
                     h5 {
                         margin-bottom: 10px;
@@ -1721,7 +1726,7 @@ input[type="range"]::-ms-thumb {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     #editCatModal {
         .modal-content {
             background-color: #363636;
@@ -1873,7 +1878,7 @@ input[type="range"]::-ms-thumb {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     .shopping-list {
         background-color: #2E2E2E;
         border: none;
@@ -1978,7 +1983,7 @@ input[type="range"]::-ms-thumb {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     .action-container {
         display: flex;
         margin-top: 70px;
@@ -2099,7 +2104,7 @@ input[type="range"]::-ms-thumb {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     #stockSection {
         header {
             border-bottom: none;
@@ -2264,15 +2269,17 @@ input[type="range"]::-ms-thumb {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     .cart-item-container {
-        column-count: 1;
+        column-count: 2;
         max-width: 100%;
         padding: 0px;
         background-color: #2E2E2E;
         padding-left: 0px;
+        margin: 0 auto;
 
         .cart-card {
+            min-width: 80%;
             max-width: 100%;
             border-radius: 0;
             background-color: #2E2E2E;
@@ -2291,6 +2298,12 @@ input[type="range"]::-ms-thumb {
                 }
             }
         }
+    }
+}
+
+@media (max-width: 920px) {
+    .cart-item-container{
+        column-count: 1;
     }
 }
 
@@ -2365,7 +2378,7 @@ input[type="range"]::-ms-thumb {
 
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1400px) {
     #recipes {
     padding-bottom: 120px;
         header {
