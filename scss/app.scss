@@ -2276,7 +2276,7 @@ input[type="range"]::-ms-thumb {
         padding: 0px;
         background-color: #2E2E2E;
         padding-left: 0px;
-        margin: 0 auto;
+
 
         .cart-card {
             min-width: 80%;
@@ -2284,6 +2284,7 @@ input[type="range"]::-ms-thumb {
             border-radius: 0;
             background-color: #2E2E2E;
             color: white;
+             margin: 0 auto;
 
             .duration-input {
                 .duration-number {

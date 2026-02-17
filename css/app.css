@@ -14843,7 +14843,6 @@ input[type=range]::-ms-thumb:active {
     padding: 0px;
     background-color: #2E2E2E;
     padding-left: 0px;
-    margin: 0 auto;
   }
   .cart-item-container .cart-card {
     min-width: 80%;
@@ -14851,6 +14850,7 @@ input[type=range]::-ms-thumb:active {
     border-radius: 0;
     background-color: #2E2E2E;
     color: white;
+    margin: 0 auto;
   }
   .cart-item-container .cart-card .duration-input .duration-number {
     background-color: #2E2E2E;
