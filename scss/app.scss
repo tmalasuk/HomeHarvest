@@ -741,6 +741,19 @@ section {
 
     .modal-header {
         padding-bottom: 0;
+
+        .bi-pencil-fill{
+            margin-left: 2%;
+            cursor: pointer;
+            color: $add-button-bg-dark;
+        }
+
+        input{
+            min-height: 75px;
+            font-family: 'Quicksand';
+            font-size: xx-large;
+            max-width: 60%;
+        }
     }
 
     .modal-body {
@@ -1855,28 +1868,43 @@ input[type="range"]::-ms-thumb {
 
 @media print {
 
-    body * {
+    body {
         visibility: hidden;
     }
-
-    .grid * {
+    
+    .shopping-list,
+    .shopping-list * {
         visibility: visible;
     }
 
-    .grid {
+    .shopping-list {
+        width: 100%;
+        padding: 0;
+        border: none;
         position: absolute;
-        top: -300px;
+        top: 0;
         left: 0;
+    }
 
-        .bi-dash {
-            visibility: hidden;
-        }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
 
-        .bi-plus {
-            visibility: hidden;
-        }
+    .grid-item {
+        width: 100%;
+        margin: 0;
+        break-inside:avoid-page;
+    }
+
+    .bi-dash,
+    .bi-plus {
+        display: none;
     }
 }
+
+
 
 @media (max-width: 1400px) {
     .shopping-list {
