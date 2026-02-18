@@ -328,8 +328,8 @@ $(document).ready(function () {
         $('#addItemModal').addClass('show');
         $(modal).find('button').children('span').text('Add to List')
         $(modal).find('input[type="number"]').val(1);
-        var categoryText = $('.category-items header h3').text().trim();
-        $('select[name="addItemCategory"]').val(categoryText);
+        let categoryText = $('.ac-button.active').text().trim();
+         $('select[name="addItemCategory"]').val(categoryText);
 
     })
 

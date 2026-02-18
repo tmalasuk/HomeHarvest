@@ -1675,6 +1675,7 @@ input[type="range"]::-ms-thumb {
                     padding-bottom: 50px;
                     max-width: 800px;
                     padding-top: 50px;
+                    padding-left: 50px;
 
                     .grocery-item {
                         flex: 1 1 350px;
@@ -1733,7 +1734,7 @@ input[type="range"]::-ms-thumb {
             .category-items-mobile {
                 .grocery-list {
                     max-width: 400px;
-
+                    padding-left: 20px;
                 }
             }
         }
