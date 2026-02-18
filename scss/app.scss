@@ -630,8 +630,8 @@ section {
 
 @media (max-width: 770px) {
     .col-0 {
-            display: none;
-        }
+        display: none;
+    }
 }
 
 
@@ -742,18 +742,30 @@ section {
     .modal-header {
         padding-bottom: 0;
 
-        .bi-pencil-fill{
+        .bi-pencil-fill {
             margin-left: 2%;
             cursor: pointer;
             color: $add-button-bg-dark;
         }
 
-        input{
+        input {
             min-height: 75px;
-            font-family: 'Quicksand';
-            font-size: xx-large;
-            max-width: 60%;
+            font-family: 'Oxygen';
+            font-size: x-large;
+            max-width: 70%;
+            border: none;
+            margin-left: 5px;
+
+            &:focus {
+                outline: none;
+            }
         }
+
+        .btn-close {
+            position: relative;
+            top: -30px;
+        }
+
     }
 
     .modal-body {
@@ -1644,23 +1656,38 @@ input[type="range"]::-ms-thumb {
 
                 }
 
+                .grocery-list-wrapper {
+                    display: flex;
+                    justify-content: center;
+                }
+
                 .grocery-list {
                     color: whitesmoke;
                     display: flex;
                     flex-wrap: wrap;
                     gap: 0px;
                     justify-content: flex-start;
-                    padding: 15px;
+                    padding: 0;
                     font-family: 'Quicksand';
-                    padding-left: 30px;
-
+                    padding-left: 0;
+                    margin: 0 auto;
+                    max-width: 90%;
+                    padding-bottom: 50px;
+                    max-width: 800px;
+                    padding-top: 50px;
 
                     .grocery-item {
-                        flex: 0 1 auto;
-                        max-width: 100%;
-                        min-width: 100%;
-                        margin-left: 5px;
+                        flex: 1 1 350px;
+                        max-width: 350px;
+                        min-width: none;
+                        margin-left: 0px;
+                        margin: 5px;
                         font-size: small;
+                        background-color: #272727;
+                        padding-top: 15px;
+                        padding-left: 15px;
+                        border-radius: 20px;
+                        border: #1c1c1c 1px solid;
 
                         .row {
                             min-width: 100%;
@@ -1671,7 +1698,6 @@ input[type="range"]::-ms-thumb {
                             justify-content: center;
 
                             input {
-                                max-width: 25px;
                                 margin-bottom: 30px;
                             }
 
@@ -1700,7 +1726,19 @@ input[type="range"]::-ms-thumb {
     }
 }
 
+@media (max-width: 784px) {
 
+    #grocery {
+        .section-content {
+            .category-items-mobile {
+                .grocery-list {
+                    max-width: 400px;
+
+                }
+            }
+        }
+    }
+}
 
 
 
@@ -1871,7 +1909,7 @@ input[type="range"]::-ms-thumb {
     body {
         visibility: hidden;
     }
-    
+
     .shopping-list,
     .shopping-list * {
         visibility: visible;
@@ -1895,7 +1933,7 @@ input[type="range"]::-ms-thumb {
     .grid-item {
         width: 100%;
         margin: 0;
-        break-inside:avoid-page;
+        break-inside: avoid-page;
     }
 
     .bi-dash,
@@ -2312,7 +2350,7 @@ input[type="range"]::-ms-thumb {
             border-radius: 0;
             background-color: #2E2E2E;
             color: white;
-             margin: 0 auto;
+            margin: 0 auto;
 
             .duration-input {
                 .duration-number {
@@ -2331,7 +2369,7 @@ input[type="range"]::-ms-thumb {
 }
 
 @media (max-width: 920px) {
-    .cart-item-container{
+    .cart-item-container {
         column-count: 1;
     }
 }
@@ -2409,9 +2447,10 @@ input[type="range"]::-ms-thumb {
 
 @media (max-width: 1400px) {
     #recipes {
-    padding-bottom: 120px;
+        padding-bottom: 120px;
+
         header {
-        margin-top: 25px;
+            margin-top: 25px;
             margin-left: 10px;
             color: white;
 
@@ -2453,8 +2492,8 @@ input[type="range"]::-ms-thumb {
             }
         }
 
-        .recipe-card{
-        background-color: #1c1c1c;
+        .recipe-card {
+            background-color: #1c1c1c;
         }
     }
 }
