@@ -329,7 +329,7 @@ $(document).ready(function () {
         $(modal).find('button').children('span').text('Add to List')
         $(modal).find('input[type="number"]').val(1);
         let categoryText = $('.ac-button.active').text().trim();
-         $('select[name="addItemCategory"]').val(categoryText);
+        $('select[name="addItemCategory"]').val(categoryText);
 
     })
 
@@ -370,12 +370,19 @@ $(document).ready(function () {
         });
     });
 
-    $('.ac-button').on('click', function (e) {
+    $('#categoryTable').on('click', '.ac-button', function (e) {
+        if ($(e.target).closest('.bi-pencil-square').length) {
+            return;
+        }
+
         $('.ac-button').not(this).removeClass('active');
         $(this).toggleClass('active');
 
-        $('.category-items-desktop').find('h3').text($(this).text())
+        $('.category-items-desktop')
+            .find('h3')
+            .text($(this).text());
     });
+
 
     //-----CATEGORIES
 
@@ -416,7 +423,119 @@ $(document).ready(function () {
 
     });
 
+    $('#addCat').on('click', function () {
+        console.log('ive been clicked')
+        let acBtn = `<div class="sort">
+                                    <div class="ac-button"><span class="grip"><i
+                                                class="bi bi-grip-horizontal"></i></span><span class="cat-name"></span><input type="text"><i
+                                            class="bi bi-pencil-square change-fill-edit-cat"></i></button>
+                                    </div>
+                                    <div class="category-items-mobile">
+                                        <header>
+                                            <button class="addItemtoGroceryListBtn">
+                                                <h5><i class="bi bi-plus-lg icon-spin"></i></h5>
+                                            </button>
+                                            <div class="action-group">
+                                                <button class="btn btn-delete active"><span>Delete</span></button>
+                                                <button class="btn btn-move"><span>Move</span></button>
+                                            </div>
+                                            <span class="save"><i class="bi bi-floppy"></i></span>
+                                            <div class="move-select-wrapper">
+                                                <select name="chooseMoveCat">
+                                                    <option value="volvo">Volvo</option>
+                                                    <option value="saab">Saab</option>
+                                                    <option value="mercedes" selected>Mercedes</option>
+                                                    <option value="audi">Audi</option>
+                                                </select>
+                                            </div>
+                                        </header>
+                                        <div class="grocery-list-wrapper">
+                                            <div class="grocery-list">
+                                                <div class="grocery-item">
+                                                    <div class="row">
+                                                        <input class="changing-checkbox red col-3" type="checkbox">
+                                                        <p class="col-27">Name</p>
+                                                        <div class="item-count col-10">
+                                                            <i class="bi bi-dash"></i>
+                                                            <p class="number">1</p>
+                                                            <i class="bi bi-plus"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="grocery-item">
+                                                    <div class="row">
+                                                        <input class="changing-checkbox red col-3" type="checkbox">
+                                                        <p class="col-27">Name</p>
+                                                        <div class="item-count col-10">
+                                                            <i class="bi bi-dash"></i>
+                                                            <p class="number">1</p>
+                                                            <i class="bi bi-plus"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="grocery-item">
+                                                    <div class="row">
+                                                        <input class="changing-checkbox red col-3" type="checkbox">
+                                                        <p class="col-27">Name</p>
+                                                        <div class="item-count col-10">
+                                                            <i class="bi bi-dash"></i>
+                                                            <p class="number">1</p>
+                                                            <i class="bi bi-plus"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="grocery-item">
+                                                    <div class="row">
+                                                        <input class="changing-checkbox red col-3" type="checkbox">
+                                                        <p class="col-27">Name</p>
+                                                        <div class="item-count col-10">
+                                                            <i class="bi bi-dash"></i>
+                                                            <p class="number">1</p>
+                                                            <i class="bi bi-plus"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="grocery-item">
+                                                    <div class="row">
+                                                        <input class="changing-checkbox red col-3" type="checkbox">
+                                                        <p class="col-27">Name</p>
+                                                        <div class="item-count col-10">
+                                                            <i class="bi bi-dash"></i>
+                                                            <p class="number">1</p>
+                                                            <i class="bi bi-plus"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
 
+        $('#categoryTable').prepend(acBtn).children().first().find('input').focus();
+
+        $("#categoryTable").children().first().find('input').on("blur", function () {
+            saveNewCat(this);
+        });
+
+        // Enter key
+        $("#categoryTable").children().first().find('input').on("keydown", function (e) {
+            if (e.key === "Enter") {
+                saveNewCat(this);
+                $(this).blur();
+            }
+        });
+
+        function saveNewCat(inputEl) {
+            if ($(inputEl).val() == '') {
+                $("#categoryTable").children().first().remove();
+                return;
+            }
+            else {
+                $(inputEl).addClass('d-none');
+                $(inputEl).siblings('.cat-name').text($(inputEl).val().trim())
+            }
+        }
+    })
 
 
 
