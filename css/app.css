@@ -13639,6 +13639,17 @@ section {
 #editItemModal .modal-header {
   padding-bottom: 0;
 }
+#editItemModal .modal-header .bi-pencil-fill {
+  margin-left: 2%;
+  cursor: pointer;
+  color: #C4663A;
+}
+#editItemModal .modal-header input {
+  min-height: 75px;
+  font-family: "Quicksand";
+  font-size: xx-large;
+  max-width: 60%;
+}
 #editItemModal .modal-body {
   padding-top: 30px;
   padding: 20px;
@@ -14494,22 +14505,34 @@ input[type=range]::-ms-thumb:active {
 }
 
 @media print {
-  body * {
+  body {
     visibility: hidden;
   }
-  .grid * {
+  .shopping-list,
+  .shopping-list * {
     visibility: visible;
   }
-  .grid {
+  .shopping-list {
+    width: 100%;
+    padding: 0;
+    border: none;
     position: absolute;
-    top: -300px;
+    top: 0;
     left: 0;
   }
-  .grid .bi-dash {
-    visibility: hidden;
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
-  .grid .bi-plus {
-    visibility: hidden;
+  .grid-item {
+    width: 100%;
+    margin: 0;
+    break-inside: avoid-page;
+  }
+  .bi-dash,
+  .bi-plus {
+    display: none;
   }
 }
 @media (max-width: 1400px) {

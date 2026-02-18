@@ -259,6 +259,42 @@ $(document).ready(function () {
         }
     });
 
+    //edit item name
+    function saveEdit(input) {
+        $(input).siblings('#editModalLabel').text($(input).val());
+        $('#editModalLabel')
+            .removeClass('d-none')
+            .siblings('i')
+            .removeClass('d-none');
+
+        $(input).addClass('d-none');
+    }
+
+    $('.bi-pencil-fill').on('click', function () {
+        $(this)
+            .siblings('input')
+            .removeClass('d-none')
+            .val($(this).siblings('#editModalLabel').text())
+            .focus();
+
+        $(this)
+            .addClass('d-none')
+            .siblings('#editModalLabel')
+            .addClass('d-none');
+    });
+
+    $("#edit-item-name").on("blur", function () {
+        saveEdit(this);
+    });
+
+    // Enter key
+    $("#edit-item-name").on("keydown", function (e) {
+        if (e.key === "Enter") {
+            saveEdit(this);
+            $(this).blur();
+        }
+    });
+
 
 
 
