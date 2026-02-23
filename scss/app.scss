@@ -12,7 +12,7 @@ $border-subtle-d: #151211;
 
 // Text
 $text-d: #f0ebe6;
-$text-muted-d: #898887;
+$text-muted-d: #bebebd;
 $text-faint-d: #2d2b2a;
 
 // Accent 
@@ -831,10 +831,10 @@ $grid-columns: 40;
     color: $text;
 
     >:first-child {
-        background-color: $header-color;
+        background-color: $sage;
 
         h1 {
-            color: $text-faint;
+            color: $text-muted-d;
         }
     }
 }

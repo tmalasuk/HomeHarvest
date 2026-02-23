@@ -13130,7 +13130,7 @@ textarea.form-control-lg {
 }
 [data-theme=dark] #recipes header .filter-group .tag {
   background-color: #373636;
-  color: #898887;
+  color: #bebebd;
 }
 [data-theme=dark] #recipes header .filter-group .tag.selected {
   background-color: #FAFAF8;
@@ -13170,7 +13170,7 @@ textarea.form-control-lg {
   color: #f0ebe6;
 }
 [data-theme=dark] #stockSection .cart-item-container .cart-card .duration-input .unit-switcher .unit-arrow {
-  color: #898887;
+  color: #bebebd;
 }
 
 [data-theme=dark] #shopSection .action-container {
@@ -13195,7 +13195,7 @@ textarea.form-control-lg {
   border-bottom: none;
 }
 [data-theme=dark] #shopSection .grid-item .item-name::after {
-  background-color: #898887;
+  background-color: #bebebd;
 }
 
 [data-theme=dark] .shopping-list {
@@ -13235,7 +13235,7 @@ textarea.form-control-lg {
 
 [data-theme=dark] #grocery .section-buttons .section-btn {
   background-color: #1f2020;
-  color: #898887;
+  color: #bebebd;
 }
 [data-theme=dark] #grocery .section-buttons .section-btn.active {
   background: #d69b48;
@@ -13265,7 +13265,7 @@ textarea.form-control-lg {
 }
 [data-theme=dark] #grocery .category-items-desktop header .action-group button {
   background-color: #2b2b2b;
-  color: #898887;
+  color: #bebebd;
 }
 [data-theme=dark] #grocery .category-items-desktop header .action-group button.active {
   background-color: #d69b48;
@@ -13323,7 +13323,7 @@ textarea.form-control-lg {
   background-color: #252a29;
 }
 [data-theme=dark] .nav-tabs .nav-item .nav-link {
-  color: #898887;
+  color: #bebebd;
 }
 [data-theme=dark] .nav-tabs .nav-item .nav-link:hover:not(.active) {
   color: #f0ebe6;
@@ -13349,7 +13349,7 @@ textarea.form-control-lg {
   border: none;
 }
 [data-theme=dark] #pantry .desktop-search input::placeholder {
-  color: #898887;
+  color: #bebebd;
 }
 
 [data-theme=dark] #pantry .category-menu-container .category-dropdown {
@@ -13612,10 +13612,10 @@ textarea.form-control-lg {
   color: #1a2420;
 }
 [data-theme=light] main > :first-child {
-  background-color: #D1DED3;
+  background-color: #617f61;
 }
 [data-theme=light] main > :first-child h1, [data-theme=light] main > :first-child .h1 {
-  color: #5d6763;
+  color: #bebebd;
 }
 
 [data-theme=light] .nav-tabs {
@@ -13683,7 +13683,7 @@ textarea.form-control-lg {
   background-color: #bfbbbb;
 }
 [data-theme=light] .inventory .batch-row:hover {
-  background-color: #898887;
+  background-color: #bebebd;
 }
 [data-theme=light] .inventory .batch-header-open {
   background-color: rgb(66, 61, 53);
