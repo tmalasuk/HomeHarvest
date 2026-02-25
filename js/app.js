@@ -276,7 +276,7 @@ const app = createApp({
             // Look at all batches, take the **lowest %** (earliest expiring item)
             if (!product.batch || product.batch.length === 0) return 0;
             const progresses = product.batch.map(i => this.getItemProgress(i));
-            return Math.min(...progresses);
+            return Math.max(...progresses);
         },
 
         getProgressClass(product) {
@@ -300,7 +300,7 @@ const app = createApp({
         },
 
         getItemPercent(item) {
-            const progress = this.getItemProgress(item); 
+            const progress = this.getItemProgress(item);
             return 100 - progress;
         },
 
@@ -428,6 +428,9 @@ const app = createApp({
 
         stopEditingName() {
             this.isEditingName = false;
+            if (!this.itemToEdit.name || !this.itemToEdit.name.trim()) {
+                this.itemToEdit.name = this.productOfEditItem.name; 
+            }
 
             if (this.itemToEdit.name != this.productOfEditItem) {
                 let oldProduct = this.productOfEditItem;
@@ -536,10 +539,17 @@ const app = createApp({
         },
 
         selectCategoryGrocery(category) {
-            this.selectedCategoryGrocery = category;
-            this.editCategoryName = category.name
-            if (this.isDesktop) { this.isPanelVisible = true }
-            if (this.isMobile) { this.isMobilePanelVisible = true }
+            if (this.selectedCategoryGrocery === category) {
+                this.selectedCategoryGrocery = { name: '' };
+                this.isPanelVisible = false;
+                this.isMobilePanelVisible = false;
+            }
+            else {
+                this.selectedCategoryGrocery = category;
+                this.editCategoryName = category.name;
+                if (this.isDesktop) { this.isPanelVisible = true; }
+                if (this.isMobile) { this.isMobilePanelVisible = true; }
+            }
         },
 
         addItem() {
@@ -828,7 +838,13 @@ const app = createApp({
                     this.updateExpiration(p)
                 )
             })
-        }
+        },
+        handleOutsideClick(event) {
+            let menu = this.$refs.categoryMenu;
+            if (!menu.contains(event.target)) {
+                this.showCategoryDropdown = false;
+            }
+        },
 
     },
 
@@ -935,10 +951,6 @@ const app = createApp({
             }
         },
 
-
-
-
-
     },
 
     //mounted:  called after the instance has been mounted,
@@ -946,7 +958,7 @@ const app = createApp({
         window.addEventListener('resize', this.handleResize);
         this.updateRestockShoppingList()
 
-        const vm = this; // reference to Vue instance
+        const vm = this;
         $('#categoryTable').sortable({
             items: '.sort',
             handle: '.grip',
@@ -958,14 +970,23 @@ const app = createApp({
                     const cat = vm.categories.find(c => c.id === id);
                     if (cat) newCategories.push(cat);
                 });
-                vm.categories = newCategories; // sync Vue array with new DOM order
+                vm.categories = newCategories;
             }
         });
-        // this.newItem.category = this.categories.find(c => c.name == 'Misc');
+        document.addEventListener('click', this.handleOutsideClick);
+
 
         // if (localStorage.getItem('shoppingList')) {
         //     this.shoppingList = JSON.parse(localStorage.getItem('shoppingList'));
         // }
+    },
+    beforeDestroy() {
+        document.removeEventListener('click', this.handleOutsideClick);
+        window.removeEventListener('resize', this.handleResize);
+        if (this.addingCat) {
+            this.categories.splice(0, 1)
+        }
+        this.addCat = false;
     },
 
     // watch:   calls the function if the value changes

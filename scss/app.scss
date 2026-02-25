@@ -1,6 +1,6 @@
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!DARK MODE!!
 $bg-d: #151211;
-$bg2-d: #1c1b1b;
+$bg2-d: #201f1f;
 $surface-d: #222222;
 $surface2-d: #2b2b2b;
 $surface3-d: #373636;
@@ -16,8 +16,8 @@ $text-muted-d: #bebebd;
 $text-faint-d: #2d2b2a;
 
 // Accent 
-$accent-d: #36423c;
-$accent-dim-d: #1f2020;
+$accent-d: #4b4743;
+$accent-dim-d: #484848;
 $accent-dimmest-d: #252a29;
 $dark-sage: #5F6F65;
 
@@ -30,7 +30,8 @@ $bg: #fbf9f9;
 $bg2: #e5e0de;
 $surface: #ebebeb;
 $surface2: #d2d1d0;
-$surface3: #bfbbbb;
+$surface3: #bfbdbb;
+$surface4: #acabaa;
 $header-color: #D1DED3;
 $light-background: #FAFAF8;
 
@@ -47,13 +48,14 @@ $text-faint: #5d6763;
 $accent: #d1dedc;
 $accent-dim: #b8bcbb;
 $accent-dimmest: #adb6b5;
-$sage: #617f61;
-$dark-accent: rgb(66, 61, 53);
+$sage: #6b7e6b;
+$dark-accent: rgb(109, 100, 90);
 
 // Status
-$success: #3a8f5a;
-$warning: #c4882a;
-$danger: #b83c3c;
+$success: #508464;
+$warning: #b47f2a;
+$danger: #bb3f3f;
+$lighten: #eee8e740;
 $darken: #15121135;
 $transparent: #15121100;
 
@@ -119,6 +121,26 @@ $grid-columns: 40;
 .progress {
     --bs-progress-bg: rgba(128, 128, 128, 0.564); // or whatever color you want
     --bs-progress-bar-bg: rgba(128, 128, 128, 0.623); // bar fill color
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    /* thin bar */
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    /* or match your bg color */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+    /* rounded */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 //---------XDARK MODE!!
@@ -295,7 +317,7 @@ $grid-columns: 40;
 
     .categories {
         header {
-            background-color: $text-faint-d;
+            background-color: $accent-dim-d;
 
         }
 
@@ -310,10 +332,15 @@ $grid-columns: 40;
     }
 
     .category-items-desktop {
-        background-color: $dark-background;
+        background-color: #383837;
+
+        &::before {
+            background-color: #c1440e;
+        }
 
         header {
-            background-color: $surface3-d;
+            background-color: #383837;
+            border-bottom: 2px solid #5a728a;
 
             .addItemtoGroceryListBtn {
                 background-color: $add-button-bg-dark;
@@ -336,6 +363,13 @@ $grid-columns: 40;
                 background-color: $surface2-d;
                 color: $text-d;
             }
+        }
+
+        .grocery-list {
+            background-image: repeating-linear-gradient(transparent,
+                    transparent 39px,
+                    #5a728a 39px,
+                    #5a728a 40px);
         }
 
 
@@ -368,6 +402,13 @@ $grid-columns: 40;
                 background-color: $surface3-d;
                 color: $text-d;
             }
+        }
+
+        .grocery-list {
+            background-image: repeating-linear-gradient(transparent,
+                    transparent 39px,
+                    #6b7279 39px,
+                    #444a52 40px);
         }
     }
 
@@ -473,28 +514,29 @@ $grid-columns: 40;
     background-color: $surface-d;
 
     .table-header {
-        background-color: $text-faint-d ;
+        background-color: $accent-dim-d ;
     }
 
     .td:not(.batch-header-open) {
         border-bottom: 1px solid $surface2-d;
 
         &:hover {
-            background-color: $darken;
+            background-color: $lighten;
         }
 
     }
 
     .batch-row {
         background-color: $dark-background;
+        border-bottom: 1px solid $surface3-d;
 
         &:hover {
-            background-color: $darken;
+            background-color: $lighten;
         }
     }
 
     .batch-header-open {
-        background-color: $outside-tab-deactive;
+        background-color: $accent-d;
         color: $text-d;
     }
 
@@ -728,6 +770,7 @@ $grid-columns: 40;
         }
 
         .ac-button {
+            background-color: $surface;
             color: $text;
             border: 1px solid $darken;
 
@@ -741,7 +784,7 @@ $grid-columns: 40;
     }
 
     .category-items-mobile {
-        background-color: $bg2;
+        background-color: #fffef7;
 
         header {
             background-color: $bg2;
@@ -775,24 +818,22 @@ $grid-columns: 40;
     .section-content {
         .category-items-mobile {
             .move-select-wrapper {
+
                 select {
                     background-color: $surface3;
                     color: $text;
                 }
             }
-
-            .grocery-item {
-                border: $border 1px solid;
-            }
         }
     }
 
     .category-items-desktop {
-        background-color: $surface;
+        background-color: #fffef7; // slightly warm white like real paper
         border: $darken 1px solid;
 
         header {
-            background-color: $surface2;
+            background-color: #fffef7;
+            border-bottom: 2px solid rgb(200, 214, 224);
 
             .addItemtoGroceryListBtn {
                 background-color: $add-button-bg-light;
@@ -932,9 +973,10 @@ $grid-columns: 40;
 
     .batch-row {
         background-color: $surface3;
+        border-bottom: 1px solid $surface4;
 
         &:hover {
-            background-color: $text-muted-d;
+            background-color: $surface4;
         }
     }
 
@@ -994,17 +1036,90 @@ $grid-columns: 40;
 }
 
 // XDESKTOP!
+.track-cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+
+    [data-theme="light"] & {
+        opacity: 1;
+    }
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 50%;
+    }
+
+    &.c1 {
+        width: 14px;
+        height: 5px;
+        top: 10px;
+        left: 10px;
+
+        &::before {
+            width: 6px;
+            height: 6px;
+            top: -3px;
+            left: 2px;
+        }
+
+        &::after {
+            width: 5px;
+            height: 5px;
+            top: -2px;
+            left: 6px;
+        }
+    }
+
+    &.c2 {
+        width: 10px;
+        height: 4px;
+        top: 22px;
+        left: 20px;
+
+        &::before {
+            width: 4px;
+            height: 4px;
+            top: -2px;
+            left: 1px;
+        }
+
+        &::after {
+            width: 4px;
+            height: 4px;
+            top: -2px;
+            left: 4px;
+        }
+    }
+}
+
 .progress-wrapper {
     position: relative;
 
     .expired-icon {
+        font-size: 0.55rem;
+        width: 0.55rem;
+        height: 0.55rem;
+        background-color: #ebebeb;
         position: absolute;
         top: 50%;
-        left: 50%;
+        left: 0%;
         transform: translate(-50%, -50%);
         color: $danger;
         font-size: 0.75rem;
         pointer-events: none;
+        border-radius: 100px;
+
+        i {
+            position: relative;
+            top: -45%;
+            left: 0%;
+        }
     }
 }
 
@@ -1385,11 +1500,64 @@ $grid-columns: 40;
         }
     }
 
-    .check-me-off {
+    label {
         pointer-events: all;
+    }
+
+    .check-me-off {
+        display: none;
+        /* hide default checkbox */
+    }
+
+    .circle-check {
+        display: flex;
+        align-items: center;
+        gap: 10px;
         cursor: pointer;
-        width: 20px;
-        margin-right: 30px;
+    }
+
+    .circle {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 2px solid #cbd5e1;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.1s ease;
+    }
+
+    .check-me-off:checked+.circle {
+        animation: colorGrow 0.4s ease forwards;
+        border-color: transparent;
+    }
+
+    .check-me-off:checked+.circle::after {
+        content: '✓';
+        color: white;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    @keyframes colorGrow {
+        0% {
+            transform: scale(1);
+            background-color: #60a5fa;
+            /* blue */
+        }
+
+        50% {
+            transform: scale(1.3);
+            background-color: #34d399;
+            /* teal in between */
+        }
+
+        100% {
+            transform: scale(1.1);
+            background-color: #22c55e;
+            /* green */
+        }
     }
 
 
@@ -1608,8 +1776,21 @@ $grid-columns: 40;
             min-width: 645px;
             position: relative;
             top: 0px;
-            border-radius: 20px;
+            border-radius: 4px;
             overflow: auto;
+            position: relative;
+
+            &::before {
+                min-height: 100%;
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 50px; // adjust this to move it left or right
+                width: 2px;
+                background-color: #f28b82;
+                z-index: 1;
+            }
 
             header {
                 height: 150px;
@@ -1626,12 +1807,11 @@ $grid-columns: 40;
                 font-family: "Oxygen", sans-serif;
                 font-weight: 500;
                 margin-bottom: 0;
-
-                flex: 0 0 300px;
-                /* fixed width */
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                z-index: 2;
+                margin-left: 60px;
             }
 
             .addItemtoGroceryListBtn {
@@ -1643,11 +1823,12 @@ $grid-columns: 40;
                 font-family: "Oxygen";
                 font-weight: 500;
                 position: absolute;
-                top: 85px;
+                top: 75px;
                 left: -20px;
                 border: none;
                 color: $bg;
                 border-radius: 50px;
+                z-index: 2;
 
                 h5 {
                     margin-bottom: 10px;
@@ -1724,23 +1905,47 @@ $grid-columns: 40;
         }
 
         .grocery-list {
-            display: flex;
+            background-image: repeating-linear-gradient(transparent,
+                    transparent 39px,
+                    #c9d8e8 39px,
+                    #c9d8e8 40px // blue ruled lines
+                );
+            min-height: 100%;
             flex-wrap: wrap;
-            gap: 35px;
             justify-content: flex-start;
             box-sizing: border-box;
             padding: 15px;
             font-family: 'Quicksand';
+            background-attachment: local;
+            padding: 40px 20px 0 60px;
+            line-height: 40px;
+            position: relative;
+
+            &::before {
+                min-height: 100%;
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 50px; // adjust position
+                width: 2px;
+                background-color: #f28b82;
+                z-index: 1;
+            }
+
 
 
 
             .grocery-item {
-                flex: 0 1 290px;
-                max-width: 250px;
+                max-width: 500px;
+                height: 40px;
                 margin-left: 20px;
                 font-size: small;
+                background: transparent;
 
                 .row {
+                    background: transparent;
+                    height: 40px;
                     max-height: 0;
                     margin: 0;
                     padding-bottom: 10px;
@@ -1951,7 +2156,7 @@ section {
         padding: 10px 0;
         min-width: 200px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        z-index: 100;
+        z-index: 1001;
 
         li {
             padding: 10px 20px;
@@ -2012,21 +2217,129 @@ section {
     .td {
         .trash {
             display: flex;
+        }
 
-            i {
-                margin: 0 auto;
-                cursor: pointer;
-            }
+        .delete-btn {
+            margin: 0 auto;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .delete-btn svg {
+            width: 20px;
+            height: 20px;
+            display: block;
+        }
+
+        .delete-btn .bg {
+            fill: #b3b3b3;
+            transition: fill 0.3s ease;
+        }
+
+        .delete-btn .x-line {
+            stroke: #fff;
+            stroke-width: 2.5px;
+            stroke-linecap: round;
+            stroke-dasharray: 20;
+            stroke-dashoffset: 20;
+            transition: stroke-dashoffset 0.3s ease;
+        }
+
+        .delete-btn .x-line:nth-child(3) {
+            transition-delay: 0.15s;
+        }
+
+        .delete-btn:hover .bg {
+            fill: $danger;
+        }
+
+        .delete-btn:hover .x-line {
+            stroke-dashoffset: 0;
         }
 
         .restock {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin: 0 auto;
+        }
 
-            input {
-                transform: scale(1.5);
-                cursor: pointer;
+
+
+        .checkbox-wrapper-31:hover .check {
+            stroke-dashoffset: 0;
+        }
+
+        .checkbox-wrapper-31 {
+            margin: 0 auto;
+            position: relative;
+            display: inline;
+
+            svg {
+                width: 25px;
+                height: 25px;
+                display: inline;
             }
         }
+
+        .checkbox-wrapper-31 .background {
+            fill: #afaea9;
+            transition: ease all 0.6s;
+            -webkit-transition: ease all 0.6s;
+        }
+
+        .checkbox-wrapper-31 .stroke {
+            fill: none;
+            stroke: #d0d0d0;
+            stroke-miterlimit: 10;
+            stroke-width: 2px;
+            stroke-dashoffset: 100;
+            stroke-dasharray: 100;
+            transition: ease all 0.6s;
+            -webkit-transition: ease all 0.6s;
+        }
+
+        .checkbox-wrapper-31 .check {
+            fill: none;
+            stroke:  #f7f5f5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 2px;
+            stroke-dashoffset: 22;
+            stroke-dasharray: 22;
+            transition: ease all 0.6s;
+            -webkit-transition: ease all 0.6s;
+        }
+
+        .checkbox-wrapper-31 input[type=checkbox] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            margin: 0;
+            opacity: 0;
+            -appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .checkbox-wrapper-31 input[type=checkbox]:hover {
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper-31 input[type=checkbox]:checked+svg .background {
+            fill: #6cbe45;
+        }
+
+        .checkbox-wrapper-31 input[type=checkbox]:checked+svg .stroke {
+            stroke-dashoffset: 0;
+        }
+
+        .checkbox-wrapper-31 input[type=checkbox]:checked+svg .check {
+            stroke-dashoffset: 0;
+        }
+
     }
 
     .td:not(.batch-header-open) {
@@ -2096,15 +2409,51 @@ section {
         .trash {
             color: $danger;
             display: flex;
+        }
 
-            i {
-                margin: 0 auto;
-                cursor: pointer;
-            }
+        .delete-btn {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin: 0 auto;
+        }
+
+        .delete-btn svg {
+            width: 20px;
+            height: 20px;
+            display: block;
+        }
+
+        .delete-btn .bg {
+            fill: #b3b3b3;
+            transition: fill 0.3s ease;
+        }
+
+        .delete-btn .x-line {
+            stroke: #fff;
+            stroke-width: 2.5px;
+            stroke-linecap: round;
+            stroke-dasharray: 20;
+            stroke-dashoffset: 20;
+            transition: stroke-dashoffset 0.3s ease;
+        }
+
+        .delete-btn .x-line:nth-child(3) {
+            transition-delay: 0.15s;
+        }
+
+        .delete-btn:hover .bg {
+            fill: #c0392b;
+        }
+
+        .delete-btn:hover .x-line {
+            stroke-dashoffset: 0;
         }
     }
 
 }
+
+
 
 .add-item-container {
     position: fixed;
@@ -2755,26 +3104,29 @@ section {
                 min-width: 100%;
 
                 header {
+                    position: relative;
                     margin-top: 0;
                     padding: 0;
                     flex-wrap: wrap;
                     max-height: none;
                     min-height: 130px;
+
                 }
 
                 .addItemtoGroceryListBtn {
                     cursor: pointer;
                     min-height: 70px;
-                    max-width: 80px;
+                    max-width: 160px;
                     padding: 20px;
-                    position: inherit;
-                    top: none;
-                    left: none;
+                    position: relative;
+                    top: 30px;
+                    left: -50px;
                     border: none;
                     color: $bg;
-                    border-radius: 0px 0px 10px 10px;
+                    border-radius: 0px 10px 10px 0px;
                     margin-right: auto;
                     margin-left: 10%;
+                    z-index: 100;
 
                     h5 {
                         margin-bottom: 10px;
@@ -2863,27 +3215,26 @@ section {
                     padding: 0;
                     font-family: 'Quicksand';
                     padding-left: 0;
-                    margin: 0 auto;
+                    min-width: 100%;
                     max-width: 90%;
                     padding-bottom: 50px;
                     max-width: 800px;
-                    padding-top: 20px;
-                    padding-left: 50px;
+                    padding-top: 40px;
+                    padding-left: 0px;
 
                     .grocery-item {
                         flex: 1 1 350px;
                         max-width: 350px;
+                        max-height: 40px;
                         min-width: none;
-                        margin-left: 0px;
-                        margin: 5px;
                         font-size: small;
-                        padding-top: 15px;
-                        padding-left: 15px;
                         border-radius: 20px;
+                        margin-left: 30px;
+                        padding-left: 40px;
 
                         .row {
                             min-width: 100%;
-                            max-height: 50px;
+                            max-height: 40px;
                             margin: 0;
                             padding-bottom: 0px;
                             margin-bottom: 0px;
@@ -3083,6 +3434,7 @@ section {
                 .grocery-list {
                     max-width: 400px;
                     padding-left: 20px;
+
                 }
             }
         }
