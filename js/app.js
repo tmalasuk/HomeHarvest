@@ -1,62 +1,23 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
-
-
-function computeExpirationDate(value, unit) {
-    const now = new Date();
-    let expiration = new Date(now);
-
-    switch (unit) {
-        case 'day(s)':
-            expiration.setDate(expiration.getDate() + value);
-            break;
-        case 'week(s)':
-            expiration.setDate(expiration.getDate() + value * 7);
-            break;
-        case 'month(s)':
-            expiration.setMonth(expiration.getMonth() + value);
-            break;
-        case 'year(s)':
-            expiration.setFullYear(expiration.getFullYear() + value);
-            break;
-        default:
-            console.warn('Unknown unit', unit);
-    }
-
-    return expiration;
-}
-
-function getExpirationDifferenceInDays(expiration) {
-    const today = new Date();
-    // normalize to midnight for simplicity
-    const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const expMid = new Date(expiration.getFullYear(), expiration.getMonth(), expiration.getDate());
-
-    const diffMs = expMid - todayMid; // milliseconds difference
-    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24)); // convert to days
-    return diffDays;
-}
-
-function getDurationValueAndUnit(expiration) {
-    const diffDays = getExpirationDifferenceInDays(expiration);
-
-    if (diffDays <= 0) return { value: 1, unitIndex: 0 }; // at least 1 day
-
-    if (diffDays % 365 === 0) {
-        return { value: diffDays / 365, unitIndex: 3 }; // years
-    } else if (diffDays % 30 === 0) {
-        return { value: diffDays / 30, unitIndex: 2 }; // months
-    } else if (diffDays % 7 === 0) {
-        return { value: diffDays / 7, unitIndex: 1 }; // weeks
-    } else {
-        return { value: diffDays, unitIndex: 0 }; // days
-    }
-}
-
-
-
-
+import AddItemModal from "./components/AddItemModal.js";
+import PantryTable from "./components/PantryTable.js";
+import EditItemModal from "./components/EditItemModal.js";
+import CategoryTable from "./components/CategoryTable.js";
+import CategoryPanel from "./components/CategoryPanel.js";
+import ThemeToggle from "./components/ThemeToggle.js";
+import StockSection from "./components/StockSection.js";
+import { computeExpirationDate } from "./utils.js";
 
 const app = createApp({
+    components: {
+        AddItemModal,
+        PantryTable,
+        EditItemModal,
+        CategoryTable,
+        CategoryPanel,
+        ThemeToggle,
+        StockSection,
+    },
     // data: all the data for the app
     data: function () {
         return {
@@ -76,15 +37,15 @@ const app = createApp({
                 products: [
                     {
                         id: 1, name: 'Milk', category: 'Dairy', restock: false, isOpen: false, batch: [
-                            { id: 1, name: 'Milk', category: 'Dairy', dateAdded: new Date("2026-02-20"), expiration: new Date("2026-02-24"), qty: 10 },
-                            { id: 2, name: 'Milk', category: 'Dairy', dateAdded: new Date("2026-02-20"), expiration: new Date("2026-02-26"), qty: 100 },
+                            { id: 1, name: 'Milk', category: 'Dairy', dateAdded: new Date("2026-02-20"), expiration: new Date("2026-02-28"), qty: 10 },
+                            { id: 2, name: 'Milk', category: 'Dairy', dateAdded: new Date("2026-02-20"), expiration: new Date("2026-03-02"), qty: 100 },
 
                         ]
                     },
                     {
                         id: 2, name: 'Yogurt', category: 'Dairy', isOpen: false, restock: true, batch: [
                             {
-                                id: 1, name: 'Yogurt', category: 'Dairy', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-02-27"), qty: 100,
+                                id: 1, name: 'Yogurt', category: 'Dairy', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-02"), qty: 100,
                             }
                         ]
                     },
@@ -96,12 +57,12 @@ const app = createApp({
                         ]
                     },
                     {
-                        id: 4, name: 'Venison', category: 'Meat', isOpen: false, restock: false, batch: [
+                        id: 4, name: 'Apple', category: 'Produce', isOpen: false, restock: false, batch: [
 
-                            { id: 1, name: 'Venison', category: 'Meat', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-15"), qty: 100 },
-                            { id: 2, name: 'Venison', category: 'Meat', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-15"), qty: 100, },
-                            { id: 3, name: 'Venison', category: 'Meat', dateAdded: new Date("2026-02-18"), expiration: new Date("2027-03-15"), qty: 100, },
-                            { id: 4, name: 'Venison', category: 'Meat', dateAdded: new Date("2026-02-18"), expiration: new Date("2027-03-15"), qty: 100, },
+                            { id: 1, name: 'Apple', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-02"), qty: 100 },
+                            { id: 2, name: 'Apple', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-02"), qty: 100, },
+                            { id: 3, name: 'Apple', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2027-03-06"), qty: 100, },
+                            { id: 4, name: 'Apple', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2027-03-06"), qty: 100, },
 
                         ]
                     },
@@ -115,7 +76,7 @@ const app = createApp({
                     {
                         id: 4, name: 'Strawberries', category: 'Produce', isOpen: false, restock: true, batch: [
                             {
-                                id: 1, name: 'Strawberries', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-02-28"), qty: 30,
+                                id: 1, name: 'Strawberries', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-04"), qty: 30,
                             }
                         ]
                     },
@@ -130,7 +91,7 @@ const app = createApp({
                     { id: 3, name: 'Sour Cream', qty: 1, category: 'Dairy', expiration: new Date('2026-02-18'), action: false, bought: false, durationValue: 2, selectedUnit: 1 },
                     { id: 4, name: 'String Cheese', qty: 2, category: 'Dairy', expiration: new Date('2026-02-18'), action: false, bought: false, durationValue: 2, selectedUnit: 1 },
                     // Produce        
-                    { id: 5, name: 'Apples', qty: 6, category: 'Produce', expiration: new Date('2026-02-18'), action: true, bought: false, durationValue: 2, selectedUnit: 1 },
+                    { id: 5, name: 'Apples', qty: 6, category: 'Produce', expiration: new Date('2026-02-18'), action: false, bought: false, durationValue: 2, selectedUnit: 1 },
                     { id: 6, name: 'Peppers', qty: 3, category: 'Produce', expiration: new Date('2026-02-18'), action: false, bought: false, durationValue: 2, selectedUnit: 1 },
                     { id: 7, name: 'Mushrooms', qty: 1, category: 'Produce', expiration: new Date('2026-02-18'), action: false, bought: false, durationValue: 2, selectedUnit: 1 },
                     { id: 8, name: 'Carrots', qty: 1, category: 'Produce', expiration: new Date('2026-02-18'), action: false, bought: false, durationValue: 2, selectedUnit: 1 },
@@ -162,22 +123,6 @@ const app = createApp({
             },
             //
             //new objects
-            newItem: {
-                name: 'Pickles',
-                adding: 1,
-                category: null,
-            },
-            newShopItem: {
-                name: 'Orange',
-                qty: 1,
-                category: null,
-                expiration: null,
-                action: false,
-                bought: false,
-                durationValue: 2,
-                selectedUnit: 1,
-
-            },
             newCategory: {
                 name: ''
             },
@@ -189,14 +134,12 @@ const app = createApp({
             //edit item modal
             itemToEdit: null,
             productOfEditItem: null,
-            durationValue: 1,
             units: ['day(s)', 'week(s)', 'month(s)', 'year(s)'],
-            selectedUnitIndex: 0,
-            isEditingName: false,
             //
             // add item modal
-            showAddModal: false,
             modalMode: 'pantry',
+            defaultCategory: null,
+            showAddModal: false,
             selectedCategory: null,
             //
             // grocery -organize
@@ -208,7 +151,7 @@ const app = createApp({
             isPanelVisible: false,
             isMobilePanelVisible: false,
             restockShoppingList: [],
-            saveState: 'delete',
+            saveState: null,
             //
             editCategoryName: '',
             addingCat: false,
@@ -216,106 +159,21 @@ const app = createApp({
             shakeAC: false,
             invalidInput: false,
             checkAll: false,
-            isDark: false,
         };
     },
 
     // methods: usually "events" triggered by v-on:
     methods: {
-        toggle() {
-            this.isDark = !this.isDark;
-            $('html').attr('data-theme', this.isDark ? 'dark' : 'light');
-        },
-
-        updateShoppingListFromPantry() {
-            this.pantry.products.forEach(p => {
-                if (p.restock) {
-                    const existing = this.shoppingList.products.find(
-                        s => s.name.toLowerCase() === p.name.toLowerCase()
-                    );
-
-                    if (existing) {
-                        existing.qty += 1;
-                    } else {
-                        this.shoppingList.products.push({
-                            id: p.id,
-                            name: p.name,
-                            qty: 1,
-                            categoryID: p.categoryID
-                        });
-                    }
-                }
-            })
-        },
-        getMaxBatchQtyPercent(product) {
-            if (!product.batch || product.batch.length === 0) return 0;
-            const maxQty = Math.max(...product.batch.map(b => b.qty || 0));
-            return maxQty;
-        },
-
-        getItemProgress(item) {
-            const today = new Date();
-
-            const timeDiff = item.expiration - today;
-            const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-            if (daysLeft <= 0) return 100;
-            if (daysLeft < 1) return 90;
-            if (daysLeft < 2) return 80;
-            if (daysLeft < 3) return 70;
-            if (daysLeft < 4) return 60;
-            if (daysLeft < 5) return 50;
-            if (daysLeft < 6) return 40;
-            if (daysLeft < 7) return 30;
-            if (daysLeft < 8) return 20;
-            if (daysLeft < 9) return 10;
-            return 0;
-        },
-
-        getBatchProgress(product) {
-            // Look at all batches, take the **lowest %** (earliest expiring item)
-            if (!product.batch || product.batch.length === 0) return 0;
-            const progresses = product.batch.map(i => this.getItemProgress(i));
-            return Math.max(...progresses);
-        },
-
-        getProgressClass(product) {
-            const percent = this.getBatchProgress(product);
-            if (percent <= 20) return 'bg-success';
-            if (percent <= 50) return 'bg-warning';
-            return 'bg-danger';
-        },
-
-        getItemProgressClass(item) {
-            const percent = this.getItemProgress(item);
-            if (percent <= 20) return 'bg-success';
-            if (percent <= 50) return 'bg-warning';
-            return 'bg-danger';
-        },
-
-        getBatchPercent(product) {
-            const progress = this.getBatchProgress(product); // 0-100 (100 = safe, 0 = expired)
-            // Invert so expired = 100% bar, safe = small
-            return 100 - progress;
-        },
-
-        getItemPercent(item) {
-            const progress = this.getItemProgress(item);
-            return 100 - progress;
-        },
-
-        toggleBatchOpen(product) {
-            product.isOpen = !product.isOpen
-            console.log('this method is firing')
-        },
 
         editProduct(product, item) {
             this.itemToEdit = item;
             this.productOfEditItem = product;
 
-            const { value, unitIndex } = getDurationValueAndUnit(item.expiration);
-            this.durationValue = value;
-            this.selectedUnitIndex = unitIndex;
+            this.$nextTick(() => {
+                const modalEl = document.getElementById('editItemModal');
+                const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                modal.show();
+            });
         },
 
         categoryChanged() {
@@ -369,124 +227,57 @@ const app = createApp({
             }
         },
 
-        prevUnit() {
-            if (this.selectedUnitIndex > 0) {
-                this.selectedUnitIndex--;
-                this.updateExpiration();
-            }
-        },
-        nextUnit() {
-            if (this.selectedUnitIndex < this.units.length - 1) {
-                this.selectedUnitIndex++;
-                this.updateExpiration();
-            }
-        },
-        prevUnitIndividual(product) {
-            if (product.selectedUnit > 0) {
-                product.selectedUnit--;
-                this.updateExpiration(product);
-            }
-        },
-        nextUnitIndividual(product) {
-            console.log('click')
-            if (product.selectedUnit < this.units.length - 1) {
-                product.selectedUnit++;
-                this.updateExpiration(product);
-            }
-        },
-        selectedUnitConverter(product) {
-            return this.units[product.selectedUnit];
-        },
-        updateExpiration(product = null) {
-            if (!product) {
-                this.itemToEdit.expiration = computeExpirationDate(this.durationValue, this.selectedUnit);
-                console.log('Updated expiration:', this.itemToEdit.expiration);
-            }
-            else {
-                const textUnit = this.units[product.selectedUnit];
+        stopEditingName(item, product) {
+            let oldProduct = product;
+            const indexInBatch = product.batch.findIndex(b => b.id === item.id);
 
-                product.expiration = computeExpirationDate(
-                    product.durationValue,
-                    textUnit
+            if (indexInBatch !== -1) {
+                const [movedItem] = product.batch.splice(indexInBatch, 1);
+
+                let targetProduct = this.pantry.products.find(p =>
+                    p.name === movedItem.name && p.category === movedItem.category
                 );
 
-                console.log('Updated individual expiration:', product.expiration);
-            }
+                if (targetProduct) {
+                    this.productOfEditItem = targetProduct;
+                    targetProduct.batch.push(movedItem);
+                } else {
+                    const newProductId = this.pantry.products.length
+                        ? Math.max(...this.pantry.products.map(p => p.id)) + 1
+                        : 1;
+                    targetProduct = {
+                        id: newProductId,
+                        name: movedItem.name,
+                        category: movedItem.category,
+                        restock: false,
+                        isOpen: false,
+                        batch: [movedItem]
+                    };
 
-        },
-
-
-
-        startEditingName() {
-            this.isEditingName = true;
-
-            this.$nextTick(() => {
-                this.$refs.nameInput.focus();
-                this.$refs.nameInput.select();
-            });
-        },
-
-        stopEditingName() {
-            this.isEditingName = false;
-            if (!this.itemToEdit.name || !this.itemToEdit.name.trim()) {
-                this.itemToEdit.name = this.productOfEditItem.name; 
-            }
-
-            if (this.itemToEdit.name != this.productOfEditItem) {
-                let oldProduct = this.productOfEditItem;
-                const indexInBatch = this.productOfEditItem.batch.findIndex(b => b.id === this.itemToEdit.id);
-
-                if (indexInBatch !== -1) {
-                    const [movedItem] = this.productOfEditItem.batch.splice(indexInBatch, 1);
-
-                    let targetProduct = this.pantry.products.find(p =>
-                        p.name === movedItem.name && p.category === movedItem.category
-                    );
-
-                    if (targetProduct) {
-                        this.productOfEditItem = targetProduct
-                        targetProduct.batch.push(movedItem);
+                    const originalProductIndex = this.pantry.products.findIndex(p => p.id === oldProduct.id);
+                    if (originalProductIndex !== -1) {
+                        this.pantry.products.splice(originalProductIndex + 1, 0, targetProduct);
+                        this.productOfEditItem = targetProduct;
                     } else {
-                        const newProductId = this.pantry.products.length
-                            ? Math.max(...this.pantry.products.map(p => p.id)) + 1
-                            : 1;
-                        targetProduct = {
-                            id: newProductId,
-                            name: movedItem.name,
-                            category: movedItem.category,
-                            restock: false,
-                            isOpen: false,
-                            batch: [movedItem]
-                        };
-
-
-                        const originalProductIndex = this.pantry.products.findIndex(p => p.id === this.productOfEditItem.id);
-                        if (originalProductIndex !== -1) {
-                            this.pantry.products.splice(originalProductIndex + 1, 0, targetProduct);
-                            this.productOfEditItem = targetProduct
-                        } else {
-                            // fallback if original product not found
-                            this.pantry.products.push(targetProduct);
-                            this.productOfEditItem = targetProduct
-                        }
+                        this.pantry.products.push(targetProduct);
+                        this.productOfEditItem = targetProduct;
                     }
+                }
 
-                    // If the original product's batch is now empty, remove the product
-                    if (oldProduct.batch.length === 0) {
-                        const indexProduct = this.pantry.products.findIndex(p => p.id === oldProduct.id);
-                        if (indexProduct !== -1) {
-                            this.pantry.products.splice(indexProduct, 1);
-                        }
+                if (oldProduct.batch.length === 0) {
+                    const indexProduct = this.pantry.products.findIndex(p => p.id === oldProduct.id);
+                    if (indexProduct !== -1) {
+                        this.pantry.products.splice(indexProduct, 1);
                     }
-                    else if (this.productOfEditItem.batch.length === 1) {
-                        this.oldProduct.isOpen = false;
-                    }
+                } else if (oldProduct.batch.length === 1) {
+                    oldProduct.isOpen = false;
                 }
             }
         },
 
-        deleteProduct(index) {
-            this.pantry.products.splice(index, 1);
+        deleteProduct(product) {
+            const index = this.pantry.products.findIndex(p => p === product);
+            if (index !== -1) this.pantry.products.splice(index, 1);
         },
 
         deleteItem(item, product) {
@@ -507,25 +298,86 @@ const app = createApp({
             }
         },
 
-        openPantryModal() {
-            this.modalMode = 'pantry'
-            this.newItem.category = this.selectedCategory
-                ? this.selectedCategory
-                : this.categories.find(c => c.name === 'Misc')
-            this.showAddModal = true
+
+        openAddModal(mode) {
+            this.modalMode = mode
+
+            this.defaultCategory = mode === 'pantry'
+                ? (this.selectedCategory ?? this.categories.find(c => c.name === 'Misc'))
+                : (this.selectedCategoryGrocery ?? this.categories.find(c => c.name === 'Misc'));
+
+            this.showAddModal = true;
         },
 
-        //implement this
-        openListModal() {
-            this.modalMode = 'list'
-            this.newShopItem.category = this.selectedCategoryGrocery
-                ? this.selectedCategoryGrocery
-                : this.categories.find(c => c.name === 'Misc')
-            this.showAddModal = true
-
+        handleAddItem({ name, category, quantity, mode }) {
+            if (mode === 'pantry') {
+                this.addToPantry(name, category, quantity);
+            } else {
+                this.addToShoppingList(name, category, quantity);
+            }
         },
 
-        closeAddItemModal() {
+        addToPantry(name, category, quantity) {
+            let matchProduct = this.pantry.products.find(p => p.name === name && p.category === category.name);
+            const newItems = [];
+            const now = new Date();
+
+            for (let i = 0; i < quantity; i++) {
+                newItems.push({
+                    id: crypto.randomUUID(),
+                    name: name,
+                    category: category.name,
+                    dateAdded: now,
+                    expiration: new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000) * 2), // 7 days default
+                    qty: 100
+                });
+            }
+
+            if (matchProduct) {
+                matchProduct.batch.unshift(...newItems);
+            } else {
+                const newProduct = {
+                    id: crypto.randomUUID(),
+                    name: name,
+                    category: category.name,
+                    restock: false,
+                    isOpen: false,
+                    batch: newItems
+                };
+                this.pantry.products.unshift(newProduct);
+            }
+
+            this.showAddModal = false;
+        },
+
+        addToShoppingList(name, newCategory, quantity) {
+            let matchItem = null
+            for (const category of this.sortedByCat) {
+                matchItem = category.products.find(
+                    p => p.name === name && p.category === newCategory.name
+                );
+                if (matchItem) break;
+            }
+
+            if (matchItem) {
+                matchItem.qty += quantity
+
+            }
+            else {
+                let newThing = ({
+                    id: crypto.randomUUID(),
+                    name: name,
+                    qty: quantity,
+                    category: newCategory.name,
+                    expiration: null,
+                    action: false,
+                    bought: false,
+                    durationValue: 2,
+                    selectedUnit: 1,
+                })
+                this.shoppingList.products = [...this.shoppingList.products, newThing];
+            }
+
             this.showAddModal = false;
         },
 
@@ -552,80 +404,8 @@ const app = createApp({
             }
         },
 
-        addItem() {
-            if (this.modalMode == 'pantry') {
-                let matchProduct = this.pantry.products.find(p => p.name === this.newItem.name && p.category === this.newItem.category.name);
-                const newItems = [];
-                const now = new Date();
-
-                for (let i = 0; i < this.newItem.adding; i++) {
-                    newItems.push({
-                        id: crypto.randomUUID(),
-                        name: this.newItem.name,
-                        category: this.newItem.category.name,
-                        dateAdded: now,
-                        expiration: new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000) * 2), // 7 days default
-                        qty: 100
-                    });
-                }
-
-                if (matchProduct) {
-                    matchProduct.batch.unshift(...newItems);
-                } else {
-                    const newProduct = {
-                        id: crypto.randomUUID(),
-                        name: this.newItem.name,
-                        category: this.newItem.category.name,
-                        restock: false,
-                        isOpen: false,
-                        batch: newItems
-                    };
-                    this.pantry.products.unshift(newProduct);
-                }
-
-                // Reset form
-                this.newItem.name = 'Pickles';
-                this.newItem.adding = 1;
-                this.showAddModal = false;
-            }
-            else {
-                let matchItem = null
-
-                for (const category of this.sortedByCat) {
-                    matchItem = category.products.find(
-                        p => p.name === this.newShopItem.name && p.category === this.newShopItem.category.name
-                    );
-                    if (matchItem) break;
-                }
-
-                if (matchItem) {
-                    matchItem.qty += this.newShopItem.qty
-
-                }
-                else {
-                    let newThing = ({
-                        id: crypto.randomUUID(),
-                        name: this.newShopItem.name,
-                        qty: this.newShopItem.qty,
-                        category: this.newShopItem.category.name,
-                        expiration: null,
-                        action: false,
-                        bought: false,
-                        durationValue: 2,
-                        selectedUnit: 1,
-                    })
-                    this.shoppingList.products = [...this.shoppingList.products, newThing];
-                }
-
-                this.newShopItem.name = 'Orange';
-                this.newShopItem.qty = 1;
-                this.showAddModal = false;
-            }
-        },
-
 
         lowerQty(product) {
-            console.log('click')
             if (product.qty > 1) {
                 product.qty--
             }
@@ -633,6 +413,7 @@ const app = createApp({
                 return;
             }
         },
+
         increaseQty(product) {
             product.qty++
         },
@@ -661,9 +442,6 @@ const app = createApp({
                 }));
         },
 
-        changeSaveState(state) {
-            this.saveState = state
-        },
         runAction() {
             if (this.saveState == 'delete') {
 
@@ -685,38 +463,7 @@ const app = createApp({
                 })
             }
         },
-        saveCategory() {
-            console.log("Saving category:", this.editCatName);
-            this.showEditCatModal = false;
-        },
-        deleteCategory() {
-            console.log("Deleting category:", this.editCatName);
-            this.showEditCatModal = false;
-        },
-        saveCategory() {
-            if (this.editCategoryName == "") {
-                return
-            }
-            this.pantry.products.forEach(p => {
 
-
-                if (p.category == this.selectedCategoryGrocery.name) {
-                    p.category = this.editCategoryName
-
-                    p.batch.forEach(i => {
-                        i.category = this.editCategoryName
-                    })
-                }
-            })
-            this.shoppingList.products.forEach(p => {
-                if (p.category == this.selectedCategoryGrocery.name) {
-                    p.category = this.editCategoryName
-                }
-            })
-
-            this.selectedCategoryGrocery.name = this.editCategoryName
-            this.updateRestockShoppingList()
-        },
         deleteCategory() {
             this.pantry.products.forEach(p => {
                 if (p.category == this.selectedCategoryGrocery.name) {
@@ -739,43 +486,35 @@ const app = createApp({
             this.isPanelVisible = false;
             this.updateRestockShoppingList()
         },
+
         getNextCategoryId() {
             if (this.categories.length === 0) return 1;
             return Math.max(...this.categories.map(c => c.id)) + 1;
         },
+
         addCategory() {
             this.addingCat = true;
-
-            // Add new category at the top
+            this.doneAddingCat = false;
             const id = this.getNextCategoryId();
             this.categories.unshift({
                 id: id,
                 name: '',
                 products: [],
             });
-
-            this.$nextTick(() => {
-                const inputArray = this.$refs['categoryInput_0'];
-                if (inputArray && inputArray.length) {
-                    inputArray[0].focus();
-                }
-            });
         },
+
         endAddingCat(category, index) {
-            if (category.name == '') {
-                this.invalidInput = true;
-                this.shakeAC = true;
-                setTimeout(() => { this.shakeAC = false; }, 300);
-                this.$nextTick(() => {
-                    const input = this.$refs['categoryInput_' + index][0]; // array from v-for
-                    if (input) input.focus();
-                });
-                return
-            }
             this.invalidInput = false;
-            this.addingCat = false
-
+            this.addingCat = false;
+            this.doneAddingCat = true;
         },
+
+        onInvalidCat() {
+            this.invalidInput = true;
+            this.shakeAC = true;
+            setTimeout(() => { this.shakeAC = false; }, 300);
+        },
+
         checkAllMethod() {
             this.checkAll = !this.checkAll
             if (this.checkAll == true) {
@@ -793,6 +532,7 @@ const app = createApp({
                 })
             }
         },
+
         addBoughtToPantry() {
             this.boughtItems.forEach(c => {
                 c.products.forEach(p => {
@@ -832,6 +572,7 @@ const app = createApp({
             this.updateRestockShoppingList()
 
         },
+
         updateBoughtItemExpiration() {
             this.boughtItems.forEach(c => {
                 c.products.forEach(p =>
@@ -839,6 +580,12 @@ const app = createApp({
                 )
             })
         },
+
+        updateExpiration(product) {
+            const unit = this.units[product.selectedUnit];
+            product.expiration = computeExpirationDate(product.durationValue, unit);
+        },
+
         handleOutsideClick(event) {
             let menu = this.$refs.categoryMenu;
             if (!menu.contains(event.target)) {
@@ -846,14 +593,25 @@ const app = createApp({
             }
         },
 
+        changeSaveState(state) {
+            if (this.saveState === state) {
+                this.saveState = null;
+                this.filteredShoppingList.forEach(p => p.action = false);
+            } else {
+                this.filteredShoppingList.forEach(p => p.action = false);
+                this.saveState = state;
+            }
+        },
+
+        runActionAndReset() {
+            this.runAction(); 
+            this.saveState = null;
+        },
+
     },
 
     // computed: values that are updated and cached if dependencies change
     computed: {
-        selectedUnit() {
-            return this.units[this.selectedUnitIndex];
-        },
-
         pantryTable() {
             if (this.selectedCategory == null) {
                 if (this.searchQuery.trim() !== '') {
@@ -884,7 +642,7 @@ const app = createApp({
                 ...this.restockShoppingList
             ];
 
-            if (!this.selectedCategoryGrocery) {
+            if (!this.selectedCategoryGrocery.name) {
                 return combined;
             }
 
@@ -926,29 +684,19 @@ const app = createApp({
                 }))
                 .filter(c => c.products.length > 0);
         },
-        currentItem: {
-            get() {
-                return this.modalMode == 'pantry' ? this.newItem : this.newShopItem;
-            },
-            set(value) {
-                if (this.modalMode == 'pantry') {
-                    this.newItem = value;
-                } else {
-                    this.newShopItem = value;
-                }
-            }
+        checkedCount() {
+            return this.filteredShoppingList.filter(p => p.action).length;
         },
-        quantityField: {
-            get() {
-                return this.modalMode == 'pantry' ? this.newItem.adding : this.newShopItem.qty;
-            },
-            set(value) {
-                if (this.modalMode == 'pantry') {
-                    this.newItem.adding = value;
-                } else {
-                    this.newShopItem.qty = value;
-                }
-            }
+
+        confirmLabel() {
+            const n = this.checkedCount;
+            if (this.saveState === 'delete') return `Delete ${n} item${n !== 1 ? 's' : ''}`;
+            if (this.saveState === 'move') return `Move ${n} item${n !== 1 ? 's' : ''}`;
+            return '';
+        },
+
+        confirmVisible() {
+            return this.saveState !== null && this.checkedCount > 0;
         },
 
     },
@@ -974,11 +722,6 @@ const app = createApp({
             }
         });
         document.addEventListener('click', this.handleOutsideClick);
-
-
-        // if (localStorage.getItem('shoppingList')) {
-        //     this.shoppingList = JSON.parse(localStorage.getItem('shoppingList'));
-        // }
     },
     beforeDestroy() {
         document.removeEventListener('click', this.handleOutsideClick);
@@ -992,13 +735,7 @@ const app = createApp({
     // watch:   calls the function if the value changes
     // https://travishorn.com/add-localstorage-to-your-vue-app-in-2-lines-of-code-56eb2c9f371b
     watch: {
-        // shoppingList: {
-        //     handler: function (newVal, oldVal) {
-        //         //store that in local storage
-        //         localStorage.setItem('shoppingList', JSON.stringify(newVal))
-        //     },
-        //     deep: true,
-        // }
+
     },
 
 });

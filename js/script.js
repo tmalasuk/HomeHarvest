@@ -39,43 +39,6 @@ $(document).ready(function () {
         });
     });
 
-    // $('#categoryTable').sortable({
-    //     items: '.sort',
-    //     handle: '.grip',
-    //     axis: 'y',
-    //     cursor: 'grabbing',
-    //     placeholder: 'sortable-placeholder',
-    //     stop: function (event, ui) {
-    //         // After sorting finishes, sync with Vue
-    //         const sortedIds = $(this).children('.sort').map((_, el) => {
-    //             return $(el).data('id');  // we'll attach data-id to each item
-    //         }).get();
-
-    //         // Rearrange categories array
-    //         const newCategories = [];
-    //         sortedIds.forEach(id => {
-    //             const cat = app.categories.find(c => c.id === id);
-    //             if (cat) newCategories.push(cat);
-    //         });
-
-    //         app.categories = newCategories; // reassign array so Vue reacts
-    //     }
-    // });
-
-
-    //scrolling
-    // $(".ac-button").on("click", function () {
-
-    //     if (window.innerWidth <= 1400) {
-    //         let currentCategory = $(this).parent().find("transition");
-    //         if (!currentCategory.is(":visible")) {
-    //             $("html, body").animate({
-    //                 scrollTop: $(this).offset().top
-    //             }, 500); 
-    //         }
-    //     }
-    // });
-
     $('#print-list').on('mouseenter', function () {
         $(this).children().removeClass('bi-printer').addClass('bi-printer-fill')
     })

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PantryCloud</title>
+    <title>HomeHarvest</title>
     <link rel="stylesheet" href="/css/app.css">
 </head>
 
@@ -13,53 +13,22 @@
         <div class="wrapper">
             <header class="d-flex main-header">
                 <div class="logo">
-                    <h1>PantryCloud</h1>
+                    <h1>HomeHarvest</h1>
                 </div>
-                <div id="vue-toggle" class="toggle">
-                    <div class="toggle-track" role="switch" tabindex="0" :aria-checked="!isDark" @click="toggle"
-                        @keydown.enter.space.prevent="toggle">
-                        <span class="track-star s1"></span>
-                        <span class="track-star s2"></span>
-                        <span class="track-star s3"></span>
-                        <span class="track-cloud c1"></span>
-                        <span class="track-cloud c2"></span>
-
-                        <div class="toggle-thumb" :class="isDark ? 'dark-mode' : 'light-mode'">
-                            <span class="icon-wrap icon-moon">
-                                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                                </svg>
-                            </span>
-                            <span class="icon-wrap icon-sun">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" width="16" height="16">
-                                    <circle cx="12" cy="12" r="5" />
-                                    <line x1="12" y1="1" x2="12" y2="3" />
-                                    <line x1="12" y1="21" x2="12" y2="23" />
-                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                                    <line x1="1" y1="12" x2="3" y2="12" />
-                                    <line x1="21" y1="12" x2="23" y2="12" />
-                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                                </svg>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <theme-toggle></theme-toggle>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="header-nav">
                         <button class="nav-link active" id="pantry-tab" data-bs-toggle="tab" data-bs-target="#pantry"
                             type="button" role="tab" aria-controls="home" aria-selected="true"><span>Pantry</span><i
                                 class="bi bi-box-seam"></i></button>
                     </li>
-                    <li class="nav-item middle-tab" role="header-nav" @click="closeAddItemModal">
+                    <li class="nav-item middle-tab" role="header-nav" @click="showAddModal = false">
                         <button class="nav-link middle-tab" id="grocery-tab" data-bs-toggle="tab"
                             data-bs-target="#grocery" type="button" role="tab" aria-controls="profile"
                             aria-selected="false"><span>Grocery
                                 List</span><i class="bi bi-basket"></i></button>
                     </li>
-                    <li class="nav-item" role="header-nav" @click="closeAddItemModal">
+                    <li class="nav-item" role="header-nav" @click="showAddModal = false">
                         <button class="nav-link" id="recipes-tab" data-bs-toggle="tab" data-bs-target="#recipes"
                             type="button" role="tab" aria-controls="contact"
                             aria-selected="false"><span>Recipes</span><i class="bi bi-journal-text"></i></button>
@@ -93,9 +62,8 @@
                         </ul>
 
                     </div>
-                    <button>
-                        <h3 class="ms-auto" id="addItemBtn" @click="openPantryModal"><i
-                                class="bi bi-plus-lg icon-spin"></i>Item</h3>
+                    <button id="addItemBtn" @click="openAddModal('pantry')">
+                        <i class="bi bi-plus-lg icon-spin"></i>Item
                     </button>
 
                     <form class="desktop-search" role="search" @submit.prevent>
@@ -103,214 +71,12 @@
                         <i class="bi bi-search"></i>
                     </form>
                 </header>
-                <div class="container inventory">
-                    <!-- Header -->
-
-                    <div class="row py-2 table-header">
-                        <div class="col-1">
-
-                        </div>
-                        <div class="col-md-13 col-12">Name </div>
-                        <div class="col-md-4 col-6">Qty</i></div>
-                        <div class="col-md-7 col-10">Exp <i class="bi bi-caret-down-fill"></i></div>
-                        <div class="col-md-7 col-0">Category</div>
-                        <div class="col-md-3 col-4"><span>Trash</span><i class="bi bi-trash"></i></div>
-                        <div class="col-md-3 col-4"><span>Restock</span><i class="bi bi-arrow-repeat"></i></div>
-                        <div class="col-md-0 col-3"></div>
-                    </div>
-                    <!-- Table -->
-                    <div class="product" v-for="(product, index) in pantryTable" :key="product.id">
-                        <div :class="{
-                            'row': true,
-                            'align-items-center': true,
-                            'py-2 td': true,
-                            'batch-header-open': product.isOpen
-                            }">
-                            <div class="col-1 edit dropdown" v-if="product.batch.length > 1"
-                                @click="toggleBatchOpen(product)">
-                                <i :class="product.isOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
-                            </div>
-                            <div class="col-1 edit" v-else @click="editProduct(product, product.batch[0])"
-                                data-bs-toggle="modal" data-bs-target="#editItemModal"><i
-                                    class="bi bi-pencil-square edit"></i></div>
-
-                            <div class="col-md-13 col-12 truncate">{{ product.name + " "}} <span
-                                    v-if="product.batch.length > 1">(x{{
-                                    product.batch.length }})</span></div>
-
-                            <div class="col-md-4 col-6">
-                                <div v-if="!product.isOpen" class="qty">{{ getMaxBatchQtyPercent(product) }}%</div>
-                            </div>
-
-                            <div class="col-md-7 col-10">
-                                <div class="progress-wrapper" v-if="product.isOpen == false">
-                                    <div class="progress">
-                                        <div :class="'progress-bar ' + getProgressClass(product)" role="progressbar"
-                                            :style="{ width: getBatchPercent(product) + '%' }">
-                                        </div>
-                                    </div>
-                                    <div class="expired-icon" v-if="getBatchPercent(product) === 0">
-                                        <i class="bi bi-x-circle-fill"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-7 col-0">{{ product.category }}</div>
-                            <div class="col-md-3 col-4 trash">
-                                <div class="delete-btn" v-if="product.batch.length == 1" @click="deleteProduct(index)">
-                                    <svg viewBox="0 0 35.6 35.6">
-                                        <rect class="bg" x="0" y="0" width="35.6" height="35.6" rx="4" ry="4"></rect>
-                                        <line class="x-line" x1="11" y1="11" x2="24.6" y2="24.6"></line>
-                                        <line class="x-line" x1="24.6" y1="11" x2="11" y2="24.6"></line>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-4 restock checkbox-wrapper-31">
-                                <input type="checkbox" @change="updateRestockShoppingList" v-model="product.restock">
-                                <svg viewBox="0 0 35.6 35.6">
-                                    <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
-                                    <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
-                                </svg>
-                            </div>
-                            <div class="col-md-0 col-3"></div>
-                        </div>
-                        <transition name="slide" v-if="product.batch.length > 1" v-for="(item) in product.batch"
-                            :key="item.id" :class="'batch-content-' + product.name" v-show="product.isOpen">
-                            <div class="row batch-row">
-                                <div class="col-40">
-                                    <div>
-                                        <div class="row align-items-center py-2">
-                                            <div class="col-1 edit"><i class="bi bi-pencil-square edit"
-                                                    @click="editProduct(product, item)" data-bs-toggle="modal"
-                                                    data-bs-target="#editItemModal"></i></div>
-                                            <div class="col-md-13 col-10">{{product.name}}</div>
-                                            <div class="col-md-4 col-8">
-                                                <div class="qty">{{ item.qty }}%</div>
-                                            </div>
-                                            <div class="col-md-7 col-10">
-                                                <div class="progress-wrapper">
-                                                    <div class="progress">
-                                                        <div :class="'progress-bar ' + getItemProgressClass(item)"
-                                                            role="progressbar"
-                                                            :style="{ width: getItemPercent(item) + '%' }">
-                                                        </div>
-                                                    </div>
-                                                    <div class="expired-icon" v-if="getItemPercent(item) === 0">
-                                                        <i class="bi bi-x-circle-fill"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-7 col-0">{{ item.category }}</div>
-                                            <div class="col-md-3 col-4 trash">
-                                                <div class="delete-btn" @click="deleteItem(item,product)">
-                                                    <svg viewBox="0 0 35.6 35.6">
-                                                        <rect class="bg" x="0" y="0" width="35.6" height="35.6" rx="4" ry="4"></rect>
-                                                        <line class="x-line" x1="11" y1="11" x2="24.6" y2="24.6">
-                                                        </line>
-                                                        <line class="x-line" x1="24.6" y1="11" x2="11" y2="24.6">
-                                                        </line>
-                                                    </svg>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3 col-4"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </transition>
-                    </div>
-                    <div class="modal fade" id="editItemModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content" v-if="itemToEdit">
-                                <div class="modal-header border-0">
-                                    <h5 v-if="!isEditingName" class="modal-title truncate" id="editModalLabel">
-                                        {{ itemToEdit.name }}
-                                    </h5>
-                                    <input v-else ref="nameInput" type="text" class="form-control"
-                                        v-model="itemToEdit.name" @blur="stopEditingName"
-                                        @keyup.enter="stopEditingName" />
-
-                                    <i v-if="!isEditingName" class="bi bi-pencil-fill" @click="startEditingName"></i>
-                                    <input type="text" class="d-none" id="edit-item-name">
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <label for="qtySlider">
-                                        Qty left <span>{{ itemToEdit.qty }}%</span>
-                                    </label>
-
-                                    <input type="range" id="qtySlider" min="0" max="100" step="10" list="tickmarks"
-                                        v-model.number="itemToEdit.qty" />
-
-                                    <datalist id="tickmarks">
-                                        <option value="0"></option>
-                                        <option value="10"></option>
-                                        <option value="20"></option>
-                                        <option value="30"></option>
-                                        <option value="40"></option>
-                                        <option value="50"></option>
-                                        <option value="60"></option>
-                                        <option value="70"></option>
-                                        <option value="80"></option>
-                                        <option value="90"></option>
-                                        <option value="100"></option>
-                                    </datalist>
-
-
-                                    <div class="row">
-                                        <label class="col-15" for="editItemCategory">Category</label>
-                                        <select class="col-25" name="editItemCategory" v-model="itemToEdit.category"
-                                            @change="categoryChanged">
-                                            <option v-for="category in categories" :key="category.name"
-                                                :value="category.name">
-                                                {{ category.name }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-20" for="editItemExp">Expiration in</label>
-                                        <div class="duration-input col-20">
-                                            <input type="number" min="1" v-model.number="durationValue"
-                                                class="duration-number" @change="updateExpiration()">
-                                            <div class="unit-switcher">
-                                                <button class="unit-arrow left" @click="prevUnit">
-                                                    <i class="bi bi-caret-left-fill"></i>
-                                                </button>
-
-                                                <div class="unit-display">
-                                                    <div class="unit-track"
-                                                        :style="{ transform: `translateX(-${selectedUnitIndex * 100}%)` }">
-                                                        <span v-for="(unit, index) in units" :key="unit"
-                                                            :class="{ active: index === selectedUnitIndex }">
-                                                            {{ unit }}
-                                                        </span>
-                                                    </div>
-                                                </div>
-
-                                                <button class="unit-arrow right" @click="nextUnit">
-                                                    <i class="bi bi-caret-right-fill"></i>
-                                                </button>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <label for="expiration"></label>
-                                </div>
-                                <!-- <div class="modal-footer border-0">
-                                    <button type="button" class="btn btn-primary border-0" data-bs-dismiss="modal"
-                                        id="editItemSave"><i class="bi bi-floppy"></i>
-                                        Save</button>
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <pantry-table :products="pantryTable" :is-mobile="isMobile"
+                    @edit="editProduct($event.product, $event.item)" @delete-product="deleteProduct($event)"
+                    @delete-item="deleteItem($event.item, $event.product)"
+                    @restock-change="updateRestockShoppingList" />
             </section>
+
             <!-- GROCERY LIST -->
             <section class="tab-pane fade" id="grocery" role="tabpanel" aria-labelledby="grocery-tab">
                 <div class="section-buttons">
@@ -322,119 +88,37 @@
 
                 <div class="section-content">
                     <div id="organizeSection" class="section active">
-                        <div class="categories">
-                            <header>
-                                <h3>Categories</h3>
-                                <span class="add-cat"><i class="bi bi-plus-lg" id="addCat" @click="addCategory"
-                                        v-if="!addingCat"></i></span>
-                            </header>
-                            <div id="categoryTable">
-                                <div class="sort" v-for="(category, index) in categories" :key="category.id || index"
-                                    :data-id="category.id">
-                                    <div class="ac-button" @click="selectCategoryGrocery(category)"
-                                        :class="{ active: selectedCategoryGrocery === category, shake: shakeAC && index === 0 }">
-                                        <span class="grip"><i class="bi bi-grip-horizontal"></i></span>
-                                        <input type="text" :class="{ 'input-error': invalidInput }"
-                                            v-show="addingCat && index == 0" v-model="category.name"
-                                            :ref="'categoryInput_' + index" @blur="endAddingCat(category, index)">
-                                        <span :class="{'d-none' : addingCat && !doneAddingCat && index == 0}"
-                                            class="truncate">{{ category.name }}</span>
-                                        <div class="wrap">
-                                            <i class="bi bi-pencil-square" data-bs-toggle="modal"
-                                                data-bs-target="#editCatModal"
-                                                v-show="selectedCategoryGrocery.name != 'Misc' && !addingCat"></i>
-                                        </div>
-                                    </div>
-                                    <transition name="slide">
-                                        <div class="category-items-mobile"
-                                            v-if="isMobilePanelVisible && selectedCategoryGrocery.name === category.name && !addingCat">
-                                            <header>
-                                                <button class="addItemtoGroceryListBtn" @click="openListModal">
-                                                    <h5><i class="bi bi-plus-lg icon-spin"></i></h5>
-                                                </button>
-                                                <div class="action-group">
-                                                    <button class="btn btn-delete"
-                                                        :class="{ active: saveState === 'delete' }"
-                                                        @click="changeSaveState('delete')"><span>Delete</span></button>
-                                                    <button class="btn btn-move"
-                                                        :class="{ active: saveState === 'move' }"
-                                                        @click="changeSaveState('move')"><span>Move</span></button>
-                                                </div>
-                                                <span class="save" @click="runAction"><i
-                                                        class="bi bi-floppy"></i></span>
-                                                <div class="move-select-wrapper" v-if="saveState == 'move'">
-                                                    <p>To: </p>
-                                                    <select name="chooseMoveCat" v-model="selectedCategoryMove">
-                                                        <option v-for="cat in moveCategories" :key="cat.name"
-                                                            :value="cat">
-                                                            {{ cat.name }}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </header>
-                                            <div class="grocery-list-wrapper">
-                                                <div class="grocery-list">
-                                                    <div class="grocery-item" v-for="product in filteredShoppingList"
-                                                        :key="product.id">
-                                                        <div class="row">
-                                                            <input v-model="product.action"
-                                                                class="changing-checkbox col-3"
-                                                                :class="saveState == 'delete' ? 'red' : 'yellow'"
-                                                                type="checkbox">
-                                                            <p class="col-27 truncate">{{product.name}}</p>
-                                                            <div class="item-count col-10">
-                                                                <i class="bi bi-dash" @click="lowerQty(product)"></i>
-                                                                <p class="number">{{product.qty}}</p>
-                                                                <i class="bi bi-plus" @click="increaseQty(product)"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </transition>
-                                </div>
-                            </div>
-                        </div>
+                        <category-table :categories="categories" :selected-category-grocery="selectedCategoryGrocery"
+                            :adding-cat="addingCat" :done-adding-cat="doneAddingCat" :shake-a-c="shakeAC"
+                            :invalid-input="invalidInput" @add-category="addCategory"
+                            @select-category="selectCategoryGrocery($event)"
+                            @end-adding-cat="endAddingCat($event.category, $event.index)" @invalid-cat="onInvalidCat"
+                            @edit-category="editCategoryName = $event.name">
+                            <template #default="{ category }">
+                                <transition name="slide">
+                                    <category-panel
+                                        v-if="isMobilePanelVisible && selectedCategoryGrocery.name === category.name && !addingCat"
+                                        mode="mobile" :category-name="category.name"
+                                        :filtered-shopping-list="filteredShoppingList" :save-state="saveState"
+                                        :move-categories="moveCategories" :selected-category-move="selectedCategoryMove"
+                                        :confirm-visible="confirmVisible" :confirm-label="confirmLabel"
+                                        @open-modal="openAddModal('list')" @change-save-state="changeSaveState($event)"
+                                        @update:selected-category-move="selectedCategoryMove = $event"
+                                        @run-action="runActionAndReset" @qty-increase="increaseQty($event)"
+                                        @qty-decrease="lowerQty($event)" />
+                                </transition>
+                            </template>
+                        </category-table>
                         <transition name="slide">
-                            <div class="category-items-desktop" v-if="isDesktop && isPanelVisible && !addingCat">
-                                <header>
-                                    <h3>{{ selectedCategoryGrocery.name }}</h3>
-                                    <button class="addItemtoGroceryListBtn" @click="openListModal">
-                                        <h5><i class="bi bi-plus-lg icon-spin"></i><span>Item</span></h5>
-                                    </button>
-                                    <div class="action-group">
-                                        <button class="btn btn-delete" :class="{ active: saveState === 'delete' }"
-                                            @click="changeSaveState('delete')">Delete</button>
-                                        <button class="btn btn-move" :class="{ active: saveState === 'move' }"
-                                            @click="changeSaveState('move')">Move</button>
-                                    </div>
-                                    <span class="save" @click="runAction"><i class="bi bi-floppy"></i></span>
-                                    <div class="move-select-wrapper" v-if="saveState == 'move'">
-                                        <p>To: </p>
-                                        <select name="chooseMoveCat" v-model="selectedCategoryMove">
-                                            <option v-for="cat in moveCategories" :key="cat.name" :value="cat">
-                                                {{ cat.name }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </header>
-                                <div class="grocery-list">
-                                    <div class="grocery-item" v-for="item in filteredShoppingList" :key="item.id">
-                                        <div class="row">
-                                            <input v-model="item.action" class="changing-checkbox col-3"
-                                                :class="saveState == 'delete' ? 'red' : 'yellow'" type="checkbox">
-                                            <p class="col-27 truncate">{{item.name}}</p>
-                                            <div class="item-count col-10">
-                                                <i class="bi bi-dash" @click="lowerQty(item)"></i>
-                                                <p class="number">{{item.qty}}</p>
-                                                <i class="bi bi-plus" @click="increaseQty(item)"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
+                            <category-panel v-if="isDesktop && isPanelVisible && !addingCat" mode="desktop"
+                                :category-name="selectedCategoryGrocery.name"
+                                :filtered-shopping-list="filteredShoppingList" :save-state="saveState"
+                                :move-categories="moveCategories" :selected-category-move="selectedCategoryMove"
+                                :confirm-visible="confirmVisible" :confirm-label="confirmLabel"
+                                @open-modal="openAddModal('list')" @change-save-state="changeSaveState($event)"
+                                @update:selected-category-move="selectedCategoryMove = $event"
+                                @run-action="runActionAndReset" @qty-increase="increaseQty($event)"
+                                @qty-decrease="lowerQty($event)" />
                         </transition>
                     </div>
                     <div id="shopSection" class="section">
@@ -472,52 +156,8 @@
                             </div>
                         </div>
                     </div>
-                    <div id="stockSection" class="section">
-                        <header>
-                            <h3>Set Expiration</h3>
-                            <div class="action-buttons">
-                                <button class="gen">
-                                    <i class="bi bi-magic"></i>
-                                    <span>AUTO GEN</span>
-                                </button>
-                                <button class="to-pantry" @click="addBoughtToPantry">
-                                    ADD ALL TO PANTRY
-                                    <i class="bi bi-arrow-right-circle"></i>
-                                </button>
-                            </div>
-                        </header>
-                        <div class="cart-item-container">
-                            <div class="cart-card" v-for="category in boughtItems">
-                                <div class="cart-card-header">{{category.name}}</div>
-                                <div class="cart-card-body">
-                                    <div class="cart-row" v-for="product in category.products">
-                                        <span class="truncate">{{product.name}}</span>
-                                        <div class="duration-input">
-                                            <input type="number" min="1" value="1" class="duration-number"
-                                                v-model="product.durationValue" @change="updateExpiration(product)">
-                                            <div class="unit-switcher">
-                                                <button class="unit-arrow" @click="prevUnitIndividual(product)">
-                                                    <i class="bi bi-caret-left-fill left"></i>
-                                                </button>
-                                                <div class="unit-display">
-                                                    <div class="unit-track"
-                                                        :style="{ transform: `translateX(-${product.selectedUnit * 100}%)` }">
-                                                        <span v-for="(unit, index) in units" :key="unit"
-                                                            :class="{ active: index === product.selectedUnit}">
-                                                            {{ unit }}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <button class="unit-arrow right" @click="nextUnitIndividual(product)">
-                                                    <i class="bi bi-caret-right-fill"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <stock-section :bought-items="boughtItems" :units="units" @add-to-pantry="addBoughtToPantry"
+                        @update-expiration="updateExpiration($event)" />
                 </div>
             </section>
             <!-- RECIPES -->
@@ -553,6 +193,11 @@
             </section>
         </div>
 
+        <!-- MODALS -->
+        <edit-item-modal :item-to-edit="itemToEdit" :product-of-edit-item="productOfEditItem" :categories="categories"
+            :units="units" @category-changed="categoryChanged($event.item, $event.product)"
+            @name-changed="stopEditingName($event.item, $event.product)">
+            </edit-item-modal>
         <div class="modal fade" id="editCatModal" tabindex="-1" aria-labelledby="editCategory" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -570,32 +215,9 @@
 
             </div>
         </div>
-        </section>
-
-
-
-        </div>
-        <div id="addItemModal" class="add-item-container" :class="{ show: showAddModal }" ref="addItemModal">
-            <span id="closeModal" class="close-x" @click="closeAddItemModal">&times;</span>
-            <form @submit.prevent="addItem">
-                <label for="addItemCategory">Category</label>
-                <select v-model="currentItem.category">
-                    <option v-for="category in categories" :key="category.name" :value="category">
-                        {{ category.name }}
-                    </option>
-                </select>
-                <label for="addItemName">Name</label>
-                <input type="text" name="addItemName" placeholder='Milk' v-model="currentItem.name">
-                <div class="d-flex qty mb-3">
-                    <label for="addItemQty">{{modalMode == 'pantry' ? 'Adding' : 'Quantity' }}</label>
-                    <input type="number" name="qty" class="ms-auto" v-model="quantityField">
-                </div>
-
-                <button class="btn"><i class="bi bi-arrow-left-circle"></i><span> Add To {{modalMode == 'pantry'?
-                        'Pantry': 'List'}}</span></button>
-
-            </form>
-        </div>
+        <add-item-modal :modal-mode="modalMode" :categories="categories" :default-category="defaultCategory"
+            :show="showAddModal" @close="showAddModal = false" @submit="handleAddItem">
+        </add-item-modal>
     </main>
     <script src="https://code.jquery.com/jquery-4.0.0.js"
         integrity="sha256-9fsHeVnKBvqh3FB2HYu7g2xseAZ5MlN6Kz/qnkASV8U=" crossorigin="anonymous"></script>
