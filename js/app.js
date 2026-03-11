@@ -2,10 +2,9 @@ import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
 import AddItemModal from "./components/AddItemModal.js";
 import PantryTable from "./components/PantryTable.js";
 import EditItemModal from "./components/EditItemModal.js";
-import CategoryTable from "./components/CategoryTable.js";
 import CategoryPanel from "./components/CategoryPanel.js";
 import ThemeToggle from "./components/ThemeToggle.js";
-import StockSection from "./components/StockSection.js";
+import ShopSection from "./components/ShopSection.js";
 import { computeExpirationDate } from "./utils.js";
 
 const app = createApp({
@@ -13,10 +12,9 @@ const app = createApp({
         AddItemModal,
         PantryTable,
         EditItemModal,
-        CategoryTable,
         CategoryPanel,
         ThemeToggle,
-        StockSection,
+        ShopSection,
     },
     // data: all the data for the app
     data: function () {
@@ -148,8 +146,6 @@ const app = createApp({
             },
             selectedCategoryMove: null,
             showCategoryDropdown: false,
-            isPanelVisible: false,
-            isMobilePanelVisible: false,
             restockShoppingList: [],
             saveState: null,
             //
@@ -300,6 +296,11 @@ const app = createApp({
 
 
         openAddModal(mode) {
+            if (this.addingCat) {
+                this.categories.splice(0, 1);
+                this.addingCat = false;
+                this.invalidInput = false;
+            }
             this.modalMode = mode
 
             this.defaultCategory = mode === 'pantry'
@@ -391,16 +392,12 @@ const app = createApp({
         },
 
         selectCategoryGrocery(category) {
-            if (this.selectedCategoryGrocery === category) {
+            if (this.selectedCategoryGrocery && this.selectedCategoryGrocery.id === category.id) {
                 this.selectedCategoryGrocery = { name: '' };
-                this.isPanelVisible = false;
-                this.isMobilePanelVisible = false;
             }
             else {
                 this.selectedCategoryGrocery = category;
                 this.editCategoryName = category.name;
-                if (this.isDesktop) { this.isPanelVisible = true; }
-                if (this.isMobile) { this.isMobilePanelVisible = true; }
             }
         },
 
@@ -421,8 +418,6 @@ const app = createApp({
         handleResize() {
             this.isDesktop = window.innerWidth >= 1400;
             this.isMobile = window.innerWidth < 1400;
-            if (!this.isDesktop) { this.isPanelVisible = false; }
-            if (!this.isMobile) { this.isMobilePanelVisible = false; }
         },
 
         updateRestockShoppingList() {
@@ -440,6 +435,10 @@ const app = createApp({
                     durationValue: 2,
                     selectedUnit: 1,
                 }));
+        },
+
+        updateMoveCat(catName){
+            this.selectedCategoryMove = this.categories.find(c => c.name == catName)
         },
 
         runAction() {
@@ -487,12 +486,31 @@ const app = createApp({
             this.updateRestockShoppingList()
         },
 
+        saveCategory() {
+            const oldName = this.selectedCategoryGrocery.name;
+            const newName = this.editCategoryName.trim();
+            if (!newName || oldName === newName) return;
+
+            this.pantry.products.forEach(p => {
+                if (p.category === oldName) {
+                    p.category = newName;
+                    p.batch.forEach(i => { i.category = newName; });
+                }
+            });
+            this.shoppingList.products.forEach(p => {
+                if (p.category === oldName) p.category = newName;
+            });
+
+            this.selectedCategoryGrocery.name = newName;
+        },
+
         getNextCategoryId() {
             if (this.categories.length === 0) return 1;
             return Math.max(...this.categories.map(c => c.id)) + 1;
         },
 
-        addCategory() {
+
+        addCategoryShop() {
             this.addingCat = true;
             this.doneAddingCat = false;
             const id = this.getNextCategoryId();
@@ -501,9 +519,26 @@ const app = createApp({
                 name: '',
                 products: [],
             });
+            this.$nextTick(() => {
+                this.$nextTick(() => {
+                    const input = document.querySelector('#shopSection .category-header input');
+                    if (input) input.focus();
+                });
+            });
         },
 
         endAddingCat(category, index) {
+            if (!this.addingCat) return;
+            if (!category.name || !category.name.trim()) {
+                this.invalidInput = true;
+                this.shakeAC = true;
+                setTimeout(() => { this.shakeAC = false; }, 300);
+                this.$nextTick(() => {
+                    const input = document.querySelector('#shopSection .category-header input');
+                    if (input) input.focus();
+                });
+                return;
+            }
             this.invalidInput = false;
             this.addingCat = false;
             this.doneAddingCat = true;
@@ -514,6 +549,8 @@ const app = createApp({
             this.shakeAC = true;
             setTimeout(() => { this.shakeAC = false; }, 300);
         },
+
+
 
         checkAllMethod() {
             this.checkAll = !this.checkAll
@@ -534,6 +571,11 @@ const app = createApp({
         },
 
         addBoughtToPantry() {
+            if (this.addingCat) {
+                this.categories.splice(0, 1);
+                this.addingCat = false;
+                this.invalidInput = false;
+            }
             this.boughtItems.forEach(c => {
                 c.products.forEach(p => {
 
@@ -547,7 +589,7 @@ const app = createApp({
                             name: p.name,
                             category: p.category,
                             dateAdded: now,
-                            expiration: p.expiration,
+                            expiration: computeExpirationDate(p.durationValue, this.units[p.selectedUnit]),
                             qty: 100
                         });
                     }
@@ -573,14 +615,6 @@ const app = createApp({
 
         },
 
-        updateBoughtItemExpiration() {
-            this.boughtItems.forEach(c => {
-                c.products.forEach(p =>
-                    this.updateExpiration(p)
-                )
-            })
-        },
-
         updateExpiration(product) {
             const unit = this.units[product.selectedUnit];
             product.expiration = computeExpirationDate(product.durationValue, unit);
@@ -604,7 +638,7 @@ const app = createApp({
         },
 
         runActionAndReset() {
-            this.runAction(); 
+            this.runAction();
             this.saveState = null;
         },
 
@@ -706,21 +740,6 @@ const app = createApp({
         window.addEventListener('resize', this.handleResize);
         this.updateRestockShoppingList()
 
-        const vm = this;
-        $('#categoryTable').sortable({
-            items: '.sort',
-            handle: '.grip',
-            axis: 'y',
-            stop(event, ui) {
-                const sortedIds = $(this).children('.sort').map((_, el) => $(el).data('id')).get();
-                const newCategories = [];
-                sortedIds.forEach(id => {
-                    const cat = vm.categories.find(c => c.id === id);
-                    if (cat) newCategories.push(cat);
-                });
-                vm.categories = newCategories;
-            }
-        });
         document.addEventListener('click', this.handleOutsideClick);
     },
     beforeDestroy() {

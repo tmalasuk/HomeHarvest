@@ -27,13 +27,12 @@ $(document).ready(function () {
 
     //---------GROCERY TABS
     let buttons = document.querySelectorAll('.section-btn');
-    let sections = document.querySelectorAll('.section');
 
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {
             buttons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            sections.forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             let targetId = btn.getAttribute('data-target');
             document.getElementById(targetId).classList.add('active');
         });

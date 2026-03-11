@@ -29,9 +29,6 @@ const CategoryPanel = {
             <!-- Header -->
             <header>
                 <h3 v-if="mode === 'desktop'">{{ categoryName }}</h3>
-                <button class="addItemtoGroceryListBtn" @click="$emit('open-modal')">
-                    <h5><i class="bi bi-plus-lg icon-spin"></i><span>Item</span></h5>
-                </button>
                 <div class="action-group">
                     <button class="mode-btn mode-delete"
                         :class="{ active: saveState === 'delete' }"
@@ -54,7 +51,7 @@ const CategoryPanel = {
                 <select name="chooseMoveCat"
                     class="move-dest-select"
                     :value="selectedCategoryMove ? selectedCategoryMove.name : ''"
-                    @change="$emit('update:selected-category-move', moveCategories.find(c => c.name === $event.target.value))">
+                    @change="$emit('update-move-category', $event.target.value)">
                     <option v-for="cat in moveCategories" :key="cat.name" :value="cat.name">
                         {{ cat.name }}
                     </option>
@@ -75,11 +72,6 @@ const CategoryPanel = {
                                 type="checkbox"
                             />
                             <p class="col-27 truncate">{{ product.name }}</p>
-                            <div class="item-count col-10">
-                                <i class="bi bi-dash" @click="$emit('qty-decrease', product)"></i>
-                                <p class="number">{{ product.qty }}</p>
-                                <i class="bi bi-plus" @click="$emit('qty-increase', product)"></i>
-                            </div>
                         </div>
                     </div>
                 </div>

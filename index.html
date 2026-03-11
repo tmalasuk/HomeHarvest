@@ -79,85 +79,40 @@
 
             <!-- GROCERY LIST -->
             <section class="tab-pane fade" id="grocery" role="tabpanel" aria-labelledby="grocery-tab">
-                <div class="section-buttons">
-                    <button class="section-btn active" data-target="organizeSection">Organize</button>
-                    <button class="section-btn" data-target="shopSection" id="shop">Shop</button>
-                    <button class="section-btn" data-target="stockSection" id="stock"
-                        @click="updateBoughtItemExpiration">Stock</button>
-                </div>
-
                 <div class="section-content">
-                    <div id="organizeSection" class="section active">
-                        <category-table :categories="categories" :selected-category-grocery="selectedCategoryGrocery"
-                            :adding-cat="addingCat" :done-adding-cat="doneAddingCat" :shake-a-c="shakeAC"
-                            :invalid-input="invalidInput" @add-category="addCategory"
-                            @select-category="selectCategoryGrocery($event)"
-                            @end-adding-cat="endAddingCat($event.category, $event.index)" @invalid-cat="onInvalidCat"
-                            @edit-category="editCategoryName = $event.name">
-                            <template #default="{ category }">
-                                <transition name="slide">
-                                    <category-panel
-                                        v-if="isMobilePanelVisible && selectedCategoryGrocery.name === category.name && !addingCat"
-                                        mode="mobile" :category-name="category.name"
-                                        :filtered-shopping-list="filteredShoppingList" :save-state="saveState"
-                                        :move-categories="moveCategories" :selected-category-move="selectedCategoryMove"
-                                        :confirm-visible="confirmVisible" :confirm-label="confirmLabel"
-                                        @open-modal="openAddModal('list')" @change-save-state="changeSaveState($event)"
-                                        @update:selected-category-move="selectedCategoryMove = $event"
-                                        @run-action="runActionAndReset" @qty-increase="increaseQty($event)"
-                                        @qty-decrease="lowerQty($event)" />
-                                </transition>
-                            </template>
-                        </category-table>
-                        <transition name="slide">
-                            <category-panel v-if="isDesktop && isPanelVisible && !addingCat" mode="desktop"
-                                :category-name="selectedCategoryGrocery.name"
-                                :filtered-shopping-list="filteredShoppingList" :save-state="saveState"
-                                :move-categories="moveCategories" :selected-category-move="selectedCategoryMove"
-                                :confirm-visible="confirmVisible" :confirm-label="confirmLabel"
-                                @open-modal="openAddModal('list')" @change-save-state="changeSaveState($event)"
-                                @update:selected-category-move="selectedCategoryMove = $event"
-                                @run-action="runActionAndReset" @qty-increase="increaseQty($event)"
-                                @qty-decrease="lowerQty($event)" />
-                        </transition>
-                    </div>
-                    <div id="shopSection" class="section">
+                    <shop-section
+                        :sorted-by-cat="sortedByCat"
+                        :adding-cat="addingCat"
+                        :invalid-input="invalidInput"
+                        :categories="categories"
+                        :filtered-shopping-list="filteredShoppingList"
+                        :save-state="saveState"
+                        :move-categories="moveCategories"
+                        :selected-category-move="selectedCategoryMove"
+                        :confirm-visible="confirmVisible"
+                        :confirm-label="confirmLabel"
+                        :selected-category-grocery="selectedCategoryGrocery"
+                        :is-desktop="isDesktop"
+                        :is-mobile="isMobile"
+                        :has-bought="boughtItems.length > 0"
+                        :units="units"
+                        @check-all="checkAllMethod"
+                        @add-category="addCategoryShop()"
+                        @change-save-state="changeSaveState($event)"
+                        @update-move-category="updateMoveCat($event)"
+                        @run-action="runActionAndReset"
+                        @select-category="selectCategoryGrocery($event)"
+                        @end-adding-cat="endAddingCat($event.category, $event.index)"
+                        @edit-category="selectedCategoryGrocery = $event; editCategoryName = $event.name"
+                        @reorder-categories="categories = $event"
+                        @qty-increase="increaseQty($event)"
+                        @qty-decrease="lowerQty($event)"
+                        @update-expiration="updateExpiration($event)"
+                        @add-to-pantry="addBoughtToPantry"
+                        @update:selected-category-grocery="selectedCategoryGrocery = $event"
+                        @add-item="openAddModal('grocery')">
+                    </shop-section>
 
-                        <div class="action-container">
-                            <div class="checkbox-container">
-                                <input type="checkbox" name="checkAll" id="check-all-off" @click="checkAllMethod">
-                                <label for="checkAll">Check All Items</label>
-                            </div>
-                            <span id="print-list"><i class="bi bi-printer"></i></span>
-                        </div>
-                        <div class="shopping-list">
-                            <div class="grid" id="grocery-grid">
-                                <div v-for="cat in sortedByCat">
-                                    <div class="grid-item" v-if="cat.products.length != 0">
-                                        <div class="category-header">{{cat.name}}</div>
-                                        <ul class="item-list">
-                                            <li v-for="product in cat.products">
-                                                <label class="circle-check" @click="">
-                                                    <input class="check-me-off" v-model="product.bought"
-                                                        type="checkbox">
-                                                    <span class="circle"></span>
-                                                    <span class="item-name"
-                                                        :class="{'checked': product.bought}">{{product.name}}</span>
-                                                </label>
-                                                <div class="item-count">
-                                                    <i class="bi bi-dash" @click="lowerQty(product)"></i>
-                                                    <p class="number">{{product.qty}}</p>
-                                                    <i class="bi bi-plus" @click="increaseQty(product)"></i>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <stock-section :bought-items="boughtItems" :units="units" @add-to-pantry="addBoughtToPantry"
-                        @update-expiration="updateExpiration($event)" />
                 </div>
             </section>
             <!-- RECIPES -->
