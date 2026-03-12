@@ -21,6 +21,18 @@ const PantryRow = {
             this.product.isOpen = !this.product.isOpen;
         },
 
+        onRestockChange() {
+            if (this.product.restock && !this.product.restockQty) {
+                this.product.restockQty = 1;
+            }
+            this.$emit('restock-change');
+            if (this.product.restock) {
+                this.$nextTick(() => {
+                    this.$el.querySelector('.restock-qty-num')?.focus();
+                });
+            }
+        },
+
         getMaxBatchQtyPercent() {
             if (!this.product.batch || this.product.batch.length === 0) return 0;
             return Math.max(...this.product.batch.map(b => b.qty || 0));
@@ -85,18 +97,23 @@ const PantryRow = {
                 </div>
 
                 <!-- Restock -->
-                <div class="col-md-3 col-4 restock checkbox-wrapper-31">
-                    <input v-if="!isMobile" type="checkbox"
-                        @change="$emit('restock-change')"
-                        v-model="product.restock"
-                        class="fancy-checkbox">
-                    <svg v-if="!isMobile" viewBox="0 0 35.6 35.6">
-                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
-                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
-                    </svg>
-                    <input v-if="isMobile" type="checkbox"
-                        @change="$emit('restock-change')"
-                        v-model="product.restock">
+                <div class="col-md-3 col-4 restock">
+                    <label class="restock-toggle" @click.stop>
+                        <input type="checkbox"
+                            v-model="product.restock"
+                            @change="onRestockChange"
+                            class="restock-cb-hidden">
+                        <div class="restock-pill" :class="{ checked: product.restock }">
+                            <svg class="restock-check-icon" viewBox="0 0 20 20" fill="none">
+                                <polyline class="restock-checkmark" points="3,11 8,16 17,5"></polyline>
+                            </svg>
+                            <input v-if="product.restock" type="number" min="1"
+                                v-model.number="product.restockQty"
+                                @change="$emit('restock-change')"
+                                @click.stop
+                                class="restock-qty-num">
+                        </div>
+                    </label>
                 </div>
 
                 <div class="col-md-0 col-3"></div>

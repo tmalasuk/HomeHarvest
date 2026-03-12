@@ -31,6 +31,15 @@ const PantryCard = {
                 this.$emit('edit', { product: this.product, item: this.product.batch[0] });
             }
         },
+
+        onRestockChange() {
+            this.$emit('restock-change');
+            if (this.product.restock) {
+                this.$nextTick(() => {
+                    this.$el.querySelector('.restock-qty-num')?.focus();
+                });
+            }
+        },
     },
 
     computed: {
@@ -80,11 +89,22 @@ const PantryCard = {
                 <span class="card-qty">{{ getMaxBatchQtyPercent() }}%</span>
                 <span class="card-dot"></span>
                 <span class="card-category">{{ product.category }}</span>
-                <label class="card-restock" @click.stop>
+                <label class="restock-toggle card-restock" @click.stop>
                     <input type="checkbox"
                            v-model="product.restock"
-                           @change="$emit('restock-change')" />
-                    Restock
+                           @change="onRestockChange"
+                           class="restock-cb-hidden">
+                    <div class="restock-pill" :class="{ checked: product.restock }">
+                        <svg class="restock-check-icon" viewBox="0 0 20 20" fill="none">
+                            <polyline class="restock-checkmark" points="3,11 8,16 17,5"></polyline>
+                        </svg>
+                        <input v-if="product.restock" type="number" min="1"
+                               v-model.number="product.restockQty"
+                               @change="$emit('restock-change')"
+                               @click.stop
+                               class="restock-qty-num">
+                    </div>
+                    <span class="restock-label">restock</span>
                 </label>
             </div>
 

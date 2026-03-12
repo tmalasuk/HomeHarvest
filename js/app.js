@@ -35,46 +35,46 @@ const app = createApp({
                 products: [
                     {
                         id: 1, name: 'Milk', category: 'Dairy', restock: false, isOpen: false, batch: [
-                            { id: 1, name: 'Milk', category: 'Dairy', dateAdded: new Date("2026-02-20"), expiration: new Date("2026-02-28"), qty: 10 },
-                            { id: 2, name: 'Milk', category: 'Dairy', dateAdded: new Date("2026-02-20"), expiration: new Date("2026-03-02"), qty: 100 },
+                            { id: 1, name: 'Milk', category: 'Dairy', dateAdded: new Date("2026-02-20"), expiration: new Date("2026-03-15"), qty: 10 },
+                            { id: 2, name: 'Milk', category: 'Dairy', dateAdded: new Date("2026-02-20"), expiration: new Date("2026-03-15"), qty: 100 },
 
                         ]
                     },
                     {
-                        id: 2, name: 'Yogurt', category: 'Dairy', isOpen: false, restock: true, batch: [
+                        id: 2, name: 'Yogurt', category: 'Dairy', isOpen: false, restock: true, restockQty: 3, batch: [
                             {
-                                id: 1, name: 'Yogurt', category: 'Dairy', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-02"), qty: 100,
+                                id: 1, name: 'Yogurt', category: 'Dairy', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-20"), qty: 100,
                             }
                         ]
                     },
                     {
-                        id: 4, name: 'Bread', category: 'Grains', isOpen: false, restock: true, batch: [
+                        id: 4, name: 'Bread', category: 'Grains', isOpen: false, restock: true, restockQty: 2, batch: [
                             {
-                                id: 1, name: 'Bread', category: 'Grains', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-15"), qty: 50,
+                                id: 1, name: 'Bread', category: 'Grains', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-16"), qty: 50,
                             }
                         ]
                     },
                     {
                         id: 4, name: 'Apple', category: 'Produce', isOpen: false, restock: false, batch: [
 
-                            { id: 1, name: 'Apple', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-02"), qty: 100 },
-                            { id: 2, name: 'Apple', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-02"), qty: 100, },
-                            { id: 3, name: 'Apple', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2027-03-06"), qty: 100, },
-                            { id: 4, name: 'Apple', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2027-03-06"), qty: 100, },
+                            { id: 1, name: 'Apple', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-14"), qty: 100 },
+                            { id: 2, name: 'Apple', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-14"), qty: 100, },
+                            { id: 3, name: 'Apple', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2027-03-16"), qty: 100, },
+                            { id: 4, name: 'Apple', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2027-03-16"), qty: 100, },
 
                         ]
                     },
                     {
                         id: 4, name: 'Chicken', category: 'Meat', isOpen: false, restock: false, batch: [
                             {
-                                id: 1, name: 'Chicken', category: 'Meat', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-02-15"), qty: 100,
+                                id: 1, name: 'Chicken', category: 'Meat', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-12"), qty: 100,
                             }
                         ]
                     },
                     {
-                        id: 4, name: 'Strawberries', category: 'Produce', isOpen: false, restock: true, batch: [
+                        id: 4, name: 'Strawberries', category: 'Produce', isOpen: false, restock: true, restockQty: 4, batch: [
                             {
-                                id: 1, name: 'Strawberries', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-04"), qty: 30,
+                                id: 1, name: 'Strawberries', category: 'Produce', dateAdded: new Date("2026-02-18"), expiration: new Date("2026-03-14"), qty: 30,
                             }
                         ]
                     },
@@ -195,6 +195,7 @@ const app = createApp({
                             name: movedItem.name,
                             category: movedItem.category,
                             restock: false,
+                            restockQty: 1,
                             isOpen: false,
                             batch: [movedItem]
                         };
@@ -246,6 +247,7 @@ const app = createApp({
                         name: movedItem.name,
                         category: movedItem.category,
                         restock: false,
+                        restockQty: 1,
                         isOpen: false,
                         batch: [movedItem]
                     };
@@ -342,6 +344,7 @@ const app = createApp({
                     name: name,
                     category: category.name,
                     restock: false,
+                    restockQty: 1,
                     isOpen: false,
                     batch: newItems
                 };
@@ -427,7 +430,7 @@ const app = createApp({
                     id: crypto.randomUUID(),
                     name: item.name,
                     category: item.category,
-                    qty: 1,
+                    qty: item.restockQty || 1,
                     notes: '',
                     originalPantryItem: item,
                     action: false,
@@ -602,6 +605,7 @@ const app = createApp({
                             name: p.name,
                             category: p.category,
                             restock: false,
+                            restockQty: 1,
                             isOpen: false,
                             batch: newItems
                         };

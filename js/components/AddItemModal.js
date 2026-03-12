@@ -7,6 +7,7 @@ const AddItemModal = {
             name: '',
             quantity: 1,
             selectedCategory: null,
+            fillActive: false,
         }
     },
 
@@ -59,14 +60,46 @@ const AddItemModal = {
             handler(newVal) {
                 this.selectedCategory = newVal;
             }
-        }
+        },
+        show(val) {
+            if (val) {
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        const rect = this.$refs.svgRect;
+                        if (rect) {
+                            const len = Math.ceil(rect.getTotalLength()) + 2;
+                            rect.style.strokeDasharray = len;
+                            rect.style.strokeDashoffset = len;
+                            void rect.getBoundingClientRect(); // force reflow before animating
+                            rect.style.animation = 'sketch-in 0.7s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards';
+                        }
+                        this._fillTimer = setTimeout(() => { this.fillActive = true; }, 700);
+                    }, 300); // wait for backdrop fade-in (0.3s transition)
+                });
+            } else {
+                this.fillActive = false;
+                clearTimeout(this._fillTimer);
+                const rect = this.$refs.svgRect;
+                if (rect) {
+                    rect.style.animation = 'none';
+                    rect.style.strokeDasharray = '';
+                    rect.style.strokeDashoffset = '';
+                }
+            }
+        },
     },
 
     template: `
-        <div class="add-item-container" :class="{ show: show }">
-            <span class="close-x" @click="handleClose">&times;</span>
+        <div class="add-item-backdrop" :class="{ show: show }" @click.self="handleClose"></div>
+        <div class="add-item-container" ref="container" :class="{ show: show, 'fill-active': fillActive }">
+            <svg class="modal-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <rect class="modal-svg-rect" ref="svgRect" x="1" y="1" width="99%" height="99%" rx="18" ry="18"
+                    fill="none" stroke="white" stroke-width="3"
+                    stroke-dasharray="9999" stroke-dashoffset="9999"/>
+            </svg>
+            
             <form @submit.prevent="handleSubmit">
-
+                <span class="close-x" @click="handleClose">&times;</span>
                 <label for="addItemCategory">Category</label>
                 <select v-model="selectedCategory">
                     <option v-for="category in categories" :key="category.name" :value="category">
